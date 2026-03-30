@@ -2,6 +2,43 @@
 
 Non-repo files can be found here: <https://drive.google.com/drive/folders/16-32W6aK_Q8s72FcLFNHLfO8SaQx_9Zc>
 
+## Running the Pipeline
+
+
+```bash
+# 0. Install dependencies
+pip install -r src/requirements.txt
+
+# 1. Ingest raw CSVs (most_popular.csv + tag.csv) and clean
+#    Reads from:  data/raw/
+#    Writes to:   data/processed/01_ingested/ → data/processed/02_cleaned/
+python src/data/ingestion/ingest_and_clean.py
+
+# 2. Compute temporal features and extract entry/peak/exit snapshots
+#    Reads from:  data/processed/02_cleaned/
+#    Writes to:   data/processed/03_features/
+python src/data/feature_engineering/temporal_features.py
+
+# 3. Prepare concatenated text column for NLP/BERTopic
+#    Reads from:  data/processed/03_features/
+#    Writes to:   data/processed/04_final/
+python src/data/feature_engineering/text_prep.py
+
+# 4. Export final dataset to CSV
+#    Reads from:  data/processed/04_final/
+#    Writes to:   data/processed/04_final/ (as .csv)
+python src/data/export/export_dataset.py
+```
+
+To run the full pipeline end-to-end on a sample:
+
+```bash
+python src/data/ingestion/ingest_and_clean.py --sample
+python src/data/feature_engineering/temporal_features.py --sample
+python src/data/feature_engineering/text_prep.py --sample
+python src/data/export/export_dataset.py --sample
+```
+
 ## Dataset
 
 The cleaned dataset's schema is as follows:
@@ -19,6 +56,12 @@ The cleaned dataset's schema is as follows:
 | `comment_count` | Int64 | Comment count at time of collection |
 | `default_language` | string | Video's declared default language |
 | `tag` | string | Comma-separated tags (aggregated from `tag.csv`) |
+| `subscriber_count` | Int64 | Channel subscriber count at time of collection |
+| `channel_video_count` | Int64 | Total videos on the channel at time of collection |
+| `channel_view_count` | Int64 | Total channel views at time of collection |
+| `hidden_subscriber_count` | string | Whether the channel hides its subscriber count |
+| `channel_lookup_status` | string | Status of the channel API lookup |
+| `channel_stats_fetched_at` | datetime (UTC) | When the channel stats were fetched from the API |
 | `snapshot_type` | string | `entry`, `peak`, or `exit` |
 | `time_to_trend` | float64 | Hours from publish to first trending appearance |
 | `trending_duration` | float64 | Hours the video spent in trending |
