@@ -1,6 +1,7 @@
 import dask.dataframe as dd
 import pandas as pd
 import os
+import shutil
 import argparse
 from tqdm import tqdm
 
@@ -18,6 +19,13 @@ def main():
     input_dir = os.path.join(project_root, "data", "processed", "03_features")
     output_dir = os.path.join(project_root, "data", "processed", "04_final")
     os.makedirs(output_dir, exist_ok=True)
+
+    # Remove stale output from previous runs to avoid mixed-schema reads
+    for item in os.listdir(output_dir):
+        item_path = os.path.join(output_dir, item)
+        if item.endswith(".parquet"):
+            print(f"Removing stale output: {item_path}")
+            shutil.rmtree(item_path) if os.path.isdir(item_path) else os.remove(item_path)
     
     dataset = dd.read_parquet(input_dir)
     
