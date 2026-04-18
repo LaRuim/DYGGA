@@ -1,4 +1,4 @@
-import { Flame, ThumbsUp } from 'lucide-react';
+import { Waves, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -32,17 +32,17 @@ export function Home({ likedOnly = false }) {
     }
   }, [likedOnly]);
 
-  const displayShorts = likedOnly 
+  const displayShorts = likedOnly
     ? MOCK_SHORTS.filter(short => likedIds.includes(short.id))
     : MOCK_SHORTS;
 
   return (
     <div className="content-area">
       <div className="home-section-title">
-        {likedOnly ? <ThumbsUp size={28} color="#3ea6ff" /> : <Flame size={28} color="red" />}
+        {likedOnly ? <Heart size={28} color="#ff3e3e" /> : <Waves size={28} color="rgba(100, 200, 255, 0.8)" />}
         {likedOnly ? 'Liked Visualizations' : 'Shorts Visualizations'}
       </div>
-      
+
       {likedOnly && displayShorts.length === 0 && (
         <div style={{ color: 'var(--text-secondary)', padding: '24px 0' }}>
           No liked visualizations yet. Go watch some shorts and hit the like button!
@@ -51,9 +51,9 @@ export function Home({ likedOnly = false }) {
 
       <div className="shorts-shelf no-scrollbar" style={{ flexWrap: likedOnly ? 'wrap' : 'nowrap' }}>
         {displayShorts.map((short) => (
-          <div 
-            key={short.id} 
-            className="shorts-card" 
+          <div
+            key={short.id}
+            className="shorts-card"
             onClick={() => navigate(`/shorts/${short.id}`)}
           >
             <div className="shorts-thumbnail" style={{ background: `hsl(${short.id * 50}, 70%, 40%)` }}></div>

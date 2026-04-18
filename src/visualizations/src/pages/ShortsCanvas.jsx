@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ThumbsUp, ThumbsDown, MessageSquare, Share2, MoreHorizontal, ArrowLeft, Play, BarChart2, X } from 'lucide-react';
+import { Heart, MinusCircle, MessageCircle, Send, MoreHorizontal, ArrowLeft, Play, BarChart2, X } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { InteractiveVisualization } from '../components/InteractiveVisualization';
 
@@ -171,6 +171,9 @@ export function ShortsCanvas() {
       <button className="icon-btn canvas-back-btn" onClick={() => navigate(-1)}>
         <ArrowLeft size={24} color="white" />
       </button>
+      <div style={{ position: 'fixed', top: '24px', left: '80px', zIndex: 50, color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', padding: '8px 16px', backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: '20px', backdropFilter: 'blur(4px)' }}>
+        Not affiliated with YouTube
+      </div>
 
       {reorderedShorts.map((short, idx) => (
         <div key={`${short.id}-${idx}`} className="short-player-wrapper">
@@ -183,7 +186,6 @@ export function ShortsCanvas() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', pointerEvents: 'auto' }}>
                 <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#fff' }}></div>
                 <span style={{ fontWeight: 'bold', fontSize: '1.05rem', color: '#fff' }}>{short.creator}</span>
-                <button style={{ backgroundColor: '#fff', color: '#0f0f0f', padding: '6px 14px', borderRadius: '16px', fontWeight: 'bold', fontSize: '0.85rem' }}>Subscribe</button>
               </div>
               <div className="shorts-title" style={{ fontSize: '1.1rem', marginBottom: '8px', color: '#fff' }}>{short.title}</div>
               <div className="shorts-views" style={{ marginTop: '4px', color: '#ddd', lineHeight: '1.4' }}>{short.desc}</div>
@@ -198,27 +200,27 @@ export function ShortsCanvas() {
             <div className="short-interactions" style={{ zIndex: 30 }}>
               <button className="short-action-btn" onClick={() => toggleLike(short.id)}>
                 <div className="short-action-icon">
-                  <ThumbsUp 
+                  <Heart 
                     size={24} 
-                    color={likedShorts.has(short.id) ? "#3ea6ff" : "white"} 
-                    fill={likedShorts.has(short.id) ? "#3ea6ff" : "none"}
+                    color={likedShorts.has(short.id) ? "#ff3e3e" : "white"} 
+                    fill={likedShorts.has(short.id) ? "#ff3e3e" : "none"}
                   />
                 </div>
-                <span style={{ color: likedShorts.has(short.id) ? '#3ea6ff' : 'white' }}>Like</span>
+                <span style={{ color: likedShorts.has(short.id) ? '#ff3e3e' : 'white' }}>Like</span>
               </button>
               <button className="short-action-btn">
-                <div className="short-action-icon"><ThumbsDown size={24} color="white" /></div>
-                <span style={{ color: 'white' }}>Dislike</span>
+                <div className="short-action-icon"><MinusCircle size={24} color="white" /></div>
+                <span style={{ color: 'white' }}>Ignore</span>
               </button>
               <button 
                 className="short-action-btn" 
                 onClick={() => setOpenCommentsId(openCommentsId === short.id ? null : short.id)}
               >
-                <div className="short-action-icon"><MessageSquare size={24} color="white" /></div>
+                <div className="short-action-icon"><MessageCircle size={24} color="white" /></div>
                 <span style={{ color: 'white' }}>{short.comments?.length || 0}</span>
               </button>
               <button className="short-action-btn">
-                <div className="short-action-icon"><Share2 size={24} color="white" /></div>
+                <div className="short-action-icon"><Send size={24} color="white" /></div>
                 <span style={{ color: 'white' }}>Share</span>
               </button>
               <button className="short-action-btn">
