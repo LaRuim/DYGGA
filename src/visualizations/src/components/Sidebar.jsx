@@ -1,4 +1,4 @@
-import { Home, Compass, Bookmark, Activity, Heart } from 'lucide-react';
+import { Home, Compass, Bookmark, Activity, Heart, Clapperboard } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 export function Sidebar() {
@@ -17,6 +17,13 @@ export function Sidebar() {
       >
         <Compass size={24} />
         <span>Shorts</span>
+      </NavLink>
+      <NavLink
+        to="/videos"
+        className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
+      >
+        <Clapperboard size={24} />
+        <span>Videos</span>
       </NavLink>
       <div className="sidebar-item">
         <Bookmark size={24} />

@@ -21,7 +21,7 @@ const MOCK_VIDEOS = [
   { id: 6, title: 'The architecture behind our scalable frontend', author: 'Team Gatech', views: '45K views', time: '5 days ago' },
 ];
 
-export function Home({ likedOnly = false }) {
+export function Home({ likedOnly = false, videosOnly = false }) {
   const navigate = useNavigate();
   const [likedIds, setLikedIds] = useState([]);
 
@@ -36,45 +36,53 @@ export function Home({ likedOnly = false }) {
     ? MOCK_SHORTS.filter(short => likedIds.includes(short.id))
     : MOCK_SHORTS;
 
+  const showShortsShelf = !videosOnly;
+
   return (
     <div className="content-area">
-      <div className="home-section-title">
-        {likedOnly ? <Heart size={28} color="#ff3e3e" /> : <Waves size={28} color="rgba(100, 200, 255, 0.8)" />}
-        {likedOnly ? 'Liked Visualizations' : 'Shorts Visualizations'}
-      </div>
-
-      {likedOnly && displayShorts.length === 0 && (
-        <div style={{ color: 'var(--text-secondary)', padding: '24px 0' }}>
-          No liked visualizations yet. Go watch some shorts and hit the like button!
-        </div>
-      )}
-
-      <div className="shorts-shelf no-scrollbar" style={{ flexWrap: likedOnly ? 'wrap' : 'nowrap' }}>
-        {displayShorts.map((short) => (
-          <div
-            key={short.id}
-            className="shorts-card"
-            onClick={() => navigate(`/shorts/${short.id}`)}
-          >
-            <div className="shorts-thumbnail" style={{ background: `hsl(${short.id * 50}, 70%, 40%)` }}></div>
-            <div className="shorts-card-info">
-              <div className="shorts-title">{short.title}</div>
-              <div className="shorts-views">{short.views}</div>
-            </div>
+      {showShortsShelf && (
+        <>
+          <div className="home-section-title">
+            {likedOnly ? <Heart size={28} color="#ff3e3e" /> : <Waves size={28} color="rgba(100, 200, 255, 0.8)" />}
+            {likedOnly ? 'Liked Visualizations' : 'Shorts Visualizations'}
           </div>
-        ))}
-      </div>
+
+          {likedOnly && displayShorts.length === 0 && (
+            <div style={{ color: 'var(--text-secondary)', padding: '24px 0' }}>
+              No liked visualizations yet. Go watch some shorts and hit the like button!
+            </div>
+          )}
+
+          <div className="shorts-shelf no-scrollbar" style={{ flexWrap: likedOnly ? 'wrap' : 'nowrap' }}>
+            {displayShorts.map((short) => (
+              <div
+                key={short.id}
+                className="shorts-card"
+                onClick={() => navigate(`/shorts/${short.id}`)}
+              >
+                <div className="shorts-thumbnail" style={{ background: `hsl(${short.id * 50}, 70%, 40%)` }}></div>
+                <div className="shorts-card-info">
+                  <div className="shorts-title">{short.title}</div>
+                  <div className="shorts-views">{short.views}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {!likedOnly && (
         <>
-          <div className="home-section-title" style={{ marginTop: '24px' }}>
+          <div className="home-section-title" style={{ marginTop: showShortsShelf ? '24px' : 0 }}>
             Standard Visualizations
           </div>
 
           <div className="video-grid">
             {MOCK_VIDEOS.map((video) => (
-              <div key={video.id} className="video-card">
-                <div className="video-thumbnail-container" style={{ background: `hsl(${video.id * 40 + 100}, 50%, 30%)` }}></div>
+              <div key={video.id} className="video-card" onClick={() => navigate(`/video/${video.id}`)}>
+                <div className="video-thumbnail-container" style={{ background: `hsl(${video.id * 40 + 100}, 50%, 30%)` }}>
+                  <div className="video-badge">Data Story</div>
+                </div>
                 <div className="video-info">
                   <div className="video-author-avatar"></div>
                   <div className="video-details">
