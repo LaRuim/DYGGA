@@ -1,4 +1,5 @@
 import dask.dataframe as dd
+from dask.diagnostics import ProgressBar
 import pandas as pd
 import argparse
 import os
@@ -41,13 +42,14 @@ def run_ingestion(args, project_root):
         print(f"Aggregating tags from {tags_csv}")
         tags_chunks = []
         
+        print("Counting lines in tags CSV...")
         total_rows = count_lines(tags_csv) - 1
         total_chunks = (total_rows // 1000000) + 1
         if args.sample:
             total_chunks = 1
             
         it = enumerate(pd.read_csv(tags_csv, chunksize=1000000, dtype={'region_code': 'category'}))
-        for i, chunk in tqdm(it, total=total_chunks):
+        for i, chunk in tqdm(it, total=total_chunks, desc="Reading tag chunks"):
             chunk['tag'] = chunk['tag'].fillna('').astype(str)
             agg_chunk = chunk.groupby(['collection_date', 'region_code', 'rank'])['tag'].agg(', '.join).reset_index()
             tags_chunks.append(agg_chunk)
@@ -63,6 +65,7 @@ def run_ingestion(args, project_root):
         print("Concatened tags and data")
 
         # Memory optimization: only groupby the exact elements that straddled a chunk boundary
+        print("Deduplicating cross-boundary tags...")
         is_dup = tags_grouped_list.duplicated(subset=['collection_date', 'region_code', 'rank'], keep=False)
         dup_tags = tags_grouped_list[is_dup].copy()
         
@@ -101,25 +104,35 @@ def run_ingestion(args, project_root):
         'published_at': 'str', 'channel_id': 'str', 'channel_title': 'str',
         'category_id': 'float64', 'default_language': 'str',
         'default_audio_language': 'str', 'live_broadcast_content': 'str',
-        'view_count': 'float64', 'comment_count': 'float64'
+        'view_count': 'float64', 'comment_count': 'float64',
+        'api_channel_title': 'str',
+        'subscriber_count': 'float64',
+        'hidden_subscriber_count': 'str',
+        'channel_video_count': 'float64',
+        'channel_view_count': 'float64',
+        'channel_lookup_status': 'str',
+        'channel_stats_fetched_at': 'str',
     }
 
     columns_to_keep = [
         'collection_date', 'region_code', 'rank', 'video_id', 'title', 
-        'published_at', 'channel_id', 'category_id', 'view_count', 'comment_count', 'default_language'
+        'published_at', 'category_id', 'view_count', 'comment_count', 'default_language',
+        'subscriber_count', 'channel_video_count', 'channel_view_count',
+        'hidden_subscriber_count', 'channel_lookup_status', 'channel_stats_fetched_at',
     ]
 
     # 500k sized chunks because 1mil was breaking
     chunk_size = 500000 if not args.sample else 100000
     
-    total_rows = count_lines(popular_csv) - 1
+    total_rows = 95037595
     total_chunks = (total_rows // chunk_size) + 1
     if args.sample:
         total_chunks = min(total_chunks, 2)
-        
+    
+    print(f"Found {total_rows:,} rows ({total_chunks} chunks of {chunk_size:,})")
     chunk_iterator = pd.read_csv(popular_csv, chunksize=chunk_size, dtype=dtypes, lineterminator='\n')
     
-    for i, raw_video_chunk in enumerate(tqdm(chunk_iterator, total=total_chunks)):
+    for i, raw_video_chunk in enumerate(tqdm(chunk_iterator, total=total_chunks, desc="Ingesting video chunks")):
         
         existing_cols = [c for c in columns_to_keep if c in raw_video_chunk.columns]
         raw_video_chunk = raw_video_chunk[existing_cols]
@@ -153,11 +166,18 @@ def run_cleaning(args, project_root):
             else:
                 os.remove(item_path)
     
-    dataset = dd.read_parquet(os.path.join(input_dir, "parquet/part_*.parquet"))
+    print("Reading ingested parquet files...")
+    dataset = dd.read_parquet(os.path.join(input_dir, "part_*.parquet"))
 
+    print("Parsing datetime columns...")
     dataset['collection_date'] = dd.to_datetime(dataset['collection_date'], errors='coerce', utc=True)
     dataset['published_at'] = dd.to_datetime(dataset['published_at'], errors='coerce', utc=True)
     
+    # Parse channel_stats_fetched_at as datetime
+    if 'channel_stats_fetched_at' in dataset.columns:
+        dataset['channel_stats_fetched_at'] = dd.to_datetime(dataset['channel_stats_fetched_at'], errors='coerce', utc=True)
+    
+    print("Filling null text columns...")
     text_cols = ['title', 'default_language', 'tag']
     for col in text_cols:
         if col in dataset.columns:
@@ -168,19 +188,23 @@ def run_cleaning(args, project_root):
         dataset['default_language'] = dataset['default_language'].str.replace(r'^en-.*', 'en', regex=True)
             
     # downcast categorical columns to optimize memory usage
-    cat_cols = ['region_code', 'category_id', 'default_language']
+    print("Downcasting categorical columns...")
+    cat_cols = ['region_code', 'category_id', 'default_language', 'hidden_subscriber_count', 'channel_lookup_status']
     for col in cat_cols:
         if col in dataset.columns:
             dataset[col] = dataset[col].astype('category').cat.as_known()
 
-    int_cols = ['rank', 'view_count', 'comment_count']
+    print("Casting integer columns...")
+    int_cols = ['rank', 'view_count', 'comment_count', 'subscriber_count', 'channel_video_count', 'channel_view_count']
     for col in int_cols:
         if col in dataset.columns:
             dataset[col] = dataset[col].fillna(0).astype('Int64')
 
     output_path = os.path.join(output_dir, "cleaned_sampled.parquet" if args.sample else "cleaned_full.parquet")
     
-    dataset.to_parquet(output_path, engine="pyarrow", write_index=False)
+    print("Writing cleaned parquet...")
+    with ProgressBar():
+        dataset.to_parquet(output_path, engine="pyarrow", write_index=False)
     print("Cleaning completed")
 
 def main():
