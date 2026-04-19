@@ -44,13 +44,14 @@ python src/data/export/export_dataset.py --sample
 The cleaned dataset's schema is as follows:
 
 | Column | Type | Description |
-|---|---|---|
+| --- | --- | --- |
 | `collection_date` | datetime (UTC) | Date the record was collected from YouTube trending |
 | `region_code` | string | ISO 3166-1 alpha-2 country code |
 | `rank` | Int64 | Trending rank (1 = top) |
 | `video_id` | string | YouTube video ID |
 | `title` | string | Original video title |
 | `published_at` | datetime (UTC) | When the video was uploaded to YouTube |
+| `channel_id` | string | YouTube channel ID |
 | `category_id` | float64 | YouTube category ID |
 | `view_count` | Int64 | View count at time of collection |
 | `comment_count` | Int64 | Comment count at time of collection |
@@ -67,11 +68,15 @@ The cleaned dataset's schema is as follows:
 | `trending_duration` | float64 | Hours the video spent in trending |
 | `first_seen` | datetime (UTC) | First date video appeared in trending |
 | `text_for_nlp` | string | Cleaned, lowercased `title + tag` string for NLP/BERTopic |
+| `channel_name` | string | Name of the channel (joined from subscriber stats) |
+| `subscriber_count` | float64 | Channel's total subscriber count |
+| `channel_video_count` | float64 | Total videos uploaded to the channel |
+| `channel_view_count` | float64 | Total views across the entire channel |
 
 For each `(video_id, region_code)` pair, the following are computed metrics:
 
 | Field | Description |
-|---|---|
+| --- | --- |
 | `first_seen` | Earliest `collection_date` the video appeared in trending |
 | `last_seen` | Latest `collection_date` the video appeared in trending (not included in final dataset)|
 | `time_to_trend` | Hours from `published_at` to `first_seen` |
@@ -80,7 +85,7 @@ For each `(video_id, region_code)` pair, the following are computed metrics:
 Each video is represented by up to **3 snapshot rows**, not the full daily history:
 
 | Snapshot Type | Definition |
-|---|---|
+| --- | --- |
 | `entry` | The row where the video **first appeared** in trending for that region |
 | `exit` | The row where the video **last appeared** in trending for that region |
 | `peak` | The row where the video achieved its **best (lowest) rank**. If multiple days tied for best rank, the *latest* such day is used |

@@ -27,12 +27,15 @@ def main():
         print(f"Writing {len(local_df):,} rows to CSV...")
         local_df.to_csv(output_path, index=False)
     else:
+        print("Computing entire dataset into RAM (requires 16GB+ memory)...")
         sort_cols = ['collection_date', 'region_code', 'rank', 'view_count']
         print("Computing full dataset...")
         with ProgressBar():
             df = dataset.compute()
         print(f"Sorting {len(df):,} rows...")
         df = df.sort_values(by=[c for c in sort_cols if c in df.columns])
+        
+        print(f"Writing sorted dataset to CSV in {len(df) // 500_000 + 1} chunks...")
         chunk_size = 500_000
         total_chunks = (len(df) // chunk_size) + 1
         print(f"Writing {len(df):,} rows to CSV in {total_chunks} chunks...")

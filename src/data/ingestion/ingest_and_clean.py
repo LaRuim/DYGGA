@@ -3,6 +3,8 @@ from dask.diagnostics import ProgressBar
 import pandas as pd
 import argparse
 import os
+import shutil
+import glob
 from tqdm import tqdm
 
 def count_lines(filepath):
@@ -18,6 +20,14 @@ def run_ingestion(args, project_root):
     dataset_dir = os.path.join(project_root, "data", "raw")
     output_dir = os.path.join(project_root, "data", "processed", "01_ingested")
     os.makedirs(output_dir, exist_ok=True)
+
+    # Remove stale part files from previous runs to avoid mixed-schema reads
+    stale = glob.glob(os.path.join(output_dir, "parquet/part_*.parquet"))
+    if stale:
+        print(f"Removing {len(stale)} stale parquet file(s) from {output_dir}")
+        for f in stale:
+            print(f"Removing {f}")
+            os.remove(f)
     
     popular_csv = os.path.join(dataset_dir, "most_popular.csv")
     tags_csv = os.path.join(dataset_dir, "tag.csv")
@@ -132,7 +142,7 @@ def run_ingestion(args, project_root):
         else:
             raw_video_chunk['tag'] = ''
             
-        output_file = os.path.join(output_dir, f"part_{i:04d}.parquet")
+        output_file = os.path.join(output_dir, f"parquet/part_{i:04d}.parquet")
         raw_video_chunk.to_parquet(output_file, engine="pyarrow", index=False)
         
         if args.sample and i == 1:
@@ -145,6 +155,16 @@ def run_cleaning(args, project_root):
     input_dir = os.path.join(project_root, "data", "processed", "01_ingested")
     output_dir = os.path.join(project_root, "data", "processed", "02_cleaned")
     os.makedirs(output_dir, exist_ok=True)
+
+    # Remove stale cleaned parquet(s) from previous runs
+    for item in os.listdir(output_dir):
+        item_path = os.path.join(output_dir, item)
+        if item.endswith(".parquet"):
+            print(f"Removing stale cleaned output: {item_path}")
+            if os.path.isdir(item_path):
+                shutil.rmtree(item_path)
+            else:
+                os.remove(item_path)
     
     print("Reading ingested parquet files...")
     dataset = dd.read_parquet(os.path.join(input_dir, "part_*.parquet"))

@@ -1,0 +1,1180 @@
+%%
+%% This is file `sample-sigconf.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% samples.dtx  (with options: `sigconf')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from sample-sigconf.tex.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file samples.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%% Commands for TeXCount
+%TC:macro \cite [option:text,text]
+%TC:macro \citep [option:text,text]
+%TC:macro \citet [option:text,text]
+%TC:envir table 0 1
+%TC:envir table* 0 1
+%TC:envir tabular [ignore] word
+%TC:envir displaymath 0 word
+%TC:envir math 0 word
+%TC:envir comment 0 0
+%%
+%%
+%% The first command in your LaTeX source must be the \documentclass command.
+\documentclass[sigconf,11pt]{acmart}
+
+\settopmatter{printacmref=false} 
+\renewcommand\footnotetextcopyrightpermission[1]{}
+
+
+\usepackage[british]{babel}
+%% NOTE that a single column version is required for 
+%% submission and peer review. This can be done by changing
+%% the \doucmentclass[...]{acmart} in this template to 
+%% \documentclass[manuscript,screen]{acmart}
+%% 
+%% To ensure 100% compatibility, please check the white list of
+%% approved LaTeX packages to be used with the Master Article Template at
+%% https://www.acm.org/publications/taps/whitelist-of-latex-packages 
+%% before creating your document. The white list page provides 
+%% information on how to submit additional LaTeX packages for 
+%% review and adoption.
+%% Fonts used in the template cannot be substituted; margin 
+%% adjustments are not allowed.
+
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    \normalfont B\kern-0.5em{\scshape i\kern-0.25em b}\kern-0.8em\TeX}}}
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+%% complete the rights form.
+\setcopyright{none}
+\copyrightyear{}
+\acmYear{}
+\acmDOI{}
+
+%% These commands are for a PROCEEDINGS abstract or paper.
+\acmConference[CSE6242]{Make sure to enter the correct
+  conference title from your rights confirmation emai}{Sept 01,
+  2022}{Atlanta, GA}
+%
+%  Uncomment \acmBooktitle if th title of the proceedings is different
+%  from ``Proceedings of ...''!
+%
+%\acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%  June 03--05, 2018, Woodstock, NY} 
+\acmPrice{}
+\acmISBN{}
+
+
+%%
+%% Submission ID.
+%% Use this when submitting an article to a sponsored event. You'll
+%% receive a unique submission ID from the organizers
+%% of the event, and this ID should be used as the parameter to this command.
+%%\acmSubmissionID{123-A56-BU3}
+
+%%
+%% For managing citations, it is recommended to use bibliography
+%% files in BibTeX format.
+%%
+%% You can then either use BibTeX with the ACM-Reference-Format style,
+%% or BibLaTeX with the acmnumeric or acmauthoryear sytles, that include
+%% support for advanced citation of software artefact from the
+%% biblatex-software package, also separately available on CTAN.
+%%
+%% Look at the sample-*-biblatex.tex files for templates showcasing
+%% the biblatex styles.
+%%
+
+%%
+%% The majority of ACM publications use numbered citations and
+%% references.  The command \citestyle{authoryear} switches to the
+%% "author year" style.
+%%
+%% If you are preparing content for an event
+%% sponsored by ACM SIGGRAPH, you must use the "author year" style of
+%% citations and references.
+%% Uncommenting
+%% the next command will enable that style.
+%%\citestyle{acmauthoryear}
+
+%%
+%% end of the preamble, start of the body of the document source.
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{seqsplit}
+
+\setlength{\intextsep}{6pt}
+\setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{0pt}
+
+\titlespacing*{\section}{0pt}{0.5em}{0.25em}
+\titlespacing*{\subsection}{0pt}{0.2em}{0.1em}
+\titlespacing*{\subsubsection}{0pt}{0.15em}{0.05em}
+
+\settopmatter{printacmref=false} 
+\renewcommand\footnotetextcopyrightpermission[1]{}
+
+\begin{document}
+
+%%
+%% The "title" command has an optional parameter,
+%% allowing the author to define a "short title" to be used in page headers.
+\title{\Large Decoding YouTube's Grip On Global Attention}
+
+%%
+%% The "author" command and its associated commands are used to define
+%% the authors and their affiliations.
+%% Of note is the shared affiliation of the first two authors, and the
+%% "authornote" and "authornotemark" commands
+%% used to denote shared contribution to the research.
+\author{\normalsize Bhawna Kumari, Vishnu Mothukuri, Murali Rao, Rahul Garg, Ashutosh Bharadwaj, Sheyril Agarwal}
+% \authornote{Both authors contributed equally to this research.}
+% \email{trovato@corporation.com}
+% \orcid{1234-5678-9012}
+% \author{G.K.M. Tobin}
+% \authornotemark[1]
+% \email{webmaster@marysville-ohio.com}
+% \affiliation{%
+%   \institution{Institute for Clarity in Documentation}
+%   \streetaddress{P.O. Box 1212}
+%   \city{Dublin}
+%   \state{Ohio}
+%   \country{USA}
+%   \postcode{43017-6221}
+% }
+
+% \author{Lars Th{\o}rv{\"a}ld}
+% \affiliation{%
+%   \institution{The Th{\o}rv{\"a}ld Group}
+%   \streetaddress{1 Th{\o}rv{\"a}ld Circle}
+%   \city{Hekla}
+%   \country{Iceland}}
+% \email{larst@affiliation.org}
+
+% \author{Valerie B\'eranger}
+% \affiliation{%
+%   \institution{Inria Paris-Rocquencourt}
+%   \city{Rocquencourt}
+%   \country{France}
+% }
+
+% \author{Aparna Patel}
+% \affiliation{%
+%  \institution{Rajiv Gandhi University}
+%  \streetaddress{Rono-Hills}
+%  \city{Doimukh}
+%  \state{Arunachal Pradesh}
+%  \country{India}}
+
+% \author{Huifen Chan}
+% \affiliation{%
+%   \institution{Tsinghua University}
+%   \streetaddress{30 Shuangqing Rd}
+%   \city{Haidian Qu}
+%   \state{Beijing Shi}
+%   \country{China}}
+
+% \author{Charles Palmer}
+% \affiliation{%
+%   \institution{Palmer Research Laboratories}
+%   \streetaddress{8600 Datapoint Drive}
+%   \city{San Antonio}
+%   \state{Texas}
+%   \country{USA}
+%   \postcode{78229}}
+% \email{cpalmer@prl.com}
+
+% \author{John Smith}
+% \affiliation{%
+%   \institution{The Th{\o}rv{\"a}ld Group}
+%   \streetaddress{1 Th{\o}rv{\"a}ld Circle}
+%   \city{Hekla}
+%   \country{Iceland}}
+% \email{jsmith@affiliation.org}
+
+% \author{Julius P. Kumquat}
+% \affiliation{%
+%   \institution{The Kumquat Consortium}
+%   \city{New York}
+%   \country{USA}}
+% \email{jpkumquat@consortium.net}
+
+%%
+%% By default, the full list of authors will be used in the page
+%% headers. Often, this list is too long, and will overlap
+%% other information printed in the page headers. This command allows
+%% the author to define a more concise list
+%% of authors' names for this purpose.
+\renewcommand{\shortauthors}{Trovato and Tobin, et al.}
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+% \begin{abstract}
+%   A clear and well-documented \LaTeX\ document is presented as an
+%   article formatted for publication by ACM in a conference proceedings
+%   or journal publication. Based on the ``acmart'' document class, this
+%   article presents and explains many of the common variations, as well
+%   as many of the formatting elements an author may use in the
+%   preparation of the documentation of their work.
+% \end{abstract}
+
+%%
+%% The code below is generated by the tool at http://dl.acm.org/ccs.cfm.
+%% Please copy and paste the code instead of the example below.
+%%
+% \begin{CCSXML}
+% <ccs2012>
+%  <concept>
+%   <concept_id>10010520.10010553.10010562</concept_id>
+%   <concept_desc>Computer systems organization~Embedded systems</concept_desc>
+%   <concept_significance>500</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>10010520.10010575.10010755</concept_id>
+%   <concept_desc>Computer systems organization~Redundancy</concept_desc>
+%   <concept_significance>300</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>10010520.10010553.10010554</concept_id>
+%   <concept_desc>Computer systems organization~Robotics</concept_desc>
+%   <concept_significance>100</concept_significance>
+%  </concept>
+%  <concept>
+%   <concept_id>10003033.10003083.10003095</concept_id>
+%   <concept_desc>Networks~Network reliability</concept_desc>
+%   <concept_significance>100</concept_significance>
+%  </concept>
+% </ccs2012>
+% \end{CCSXML}
+
+% \ccsdesc[500]{Computer systems organization~Embedded systems}
+% \ccsdesc[300]{Computer systems organization~Redundancy}
+% \ccsdesc{Computer systems organization~Robotics}
+% \ccsdesc[100]{Networks~Network reliability}
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\keywords{}
+
+%% A "teaser" image appears between the author and affiliation
+%% information and the body of the document, and typically spans the
+%% page.
+
+%%
+%% This command processes the author and affiliation and title
+%% information and builds the first part of the formatted document.
+\maketitle
+\pagestyle{plain} 
+
+\section{Introduction}
+People often claim that “uniqueness is dying.” This is not because creativity has vanished, but because algorithmic confounding actively homogenizes human behavior \cite{Chaney_2018}. This causes the same trends to spread so rapidly that a large portion of the internet ends up watching, sharing, and generating content along similar themes. Furthermore, because it is inherently difficult to deliver complex content in short-form videos \cite{10457053}, platforms rely on rapid, shallow content shifts that are increasingly proven to fragment attention and degrade cognitive control.
+% We hear people say “uniqueness is dying”, not because creativity has vanished, but because the same online trends spread everywhere so fast that a lot of us end up watching, sharing, and copying the same kinds of content.
+
+In this project, we want to check whether YouTube’s trending lists are gradually converging. Using trending data from 2022 to 2025, we will uncover video content themes and measure how they evolve year on year across countries. Through our work, we want to address a few main questions. First, are there fewer themes taking up a bigger share of trending over time? Additionally, are different countries’ trending lists starting to look more similar? Finally, which themes are growing or shrinking, and how quickly are trends rotating?
+
+% i think we can add few technical details here
+
+% By turning trending videos into measurable themes and tracking how that mix changes across time and place, we want to see whether this idea shows up as a real pattern in what gets promoted and consumed at scale.
+
+% i guess we are talking about technical stuff a lot later
+% For this, we extract themes from video metadata and track how they change across countries and time. We also create temporal attention-based features to see if these trending ecosystems are actually converging.
+
+% \section{Literature Survey}
+% \subsection{How is it done today; what are the limits of current practice?}
+% Current research relevant to understanding global digital trends, algorithmic curation, and the attention economy is heavily segmented. 
+% \subsubsection{Algorithmic Homogenization \& Platform Audits}
+% \begin{itemize}
+%     \item \cite{Chaney_2018} mathematically models how algorithmic recommendation systems create feedback loops that homogenize user behavior over time. To test platform agendas, \cite{doi:10.1073/pnas.2213020120} audits YouTube's recommendation algorithm using automated `sock-puppet' accounts to see if it drives users into ``filter bubbles'' or ideological rabbit holes. 
+%     These methods often rely on simulated environments \cite{Chaney_2018} or automated fake accounts \cite{doi:10.1073/pnas.2213020120}, which may fail to capture the organic global agenda. We address this by analyzing public, non-personalized global trending lists to empirically observe real-world homogenization.
+% \end{itemize}
+
+% \subsubsection{Cross-Cultural Content Diffusion}
+% \begin{itemize}
+% \item While YouTube consumption is heavily regionalized by geography and language \cite{10.1145/2187836.2187870, 10.1371/journal.pone.0278594}, cross-border diffusion is shaped by cultural alignment. \cite{10.1371/journal.pone.0177865} shows that popular video overlap is largely restricted to countries sharing `cosmopolitan' values. Structural approaches have mapped this global flow by identifying `bridge' nations that act as hubs between regions \cite{Platt2015TheIA} and by highlighting the `small-world' paths in related-video graphs that connect diverse audiences \cite{4539688}. 
+% However, these network studies are typically limited to brief timeframes and lack contextual evaluation. Our approach applies NLP to a 3-year longitudinal dataset \cite{Dataset} to identify the specific textual themes that successfully cross borders.
+% \end{itemize}
+
+% \subsubsection{Modelling Attention Lifecycles}
+% \begin{itemize}
+%     \item Current lifecycle modeling focuses almost exclusively on predicting the popularity of \textit{individual} videos for caching or marketing purposes. \cite{Crane_2008} models the relaxation dynamics of YouTube videos by dividing collective attention into endogenous and exogenous bursts. \cite{Yu_Xie_Sanner_2021} maps multi-phase popularity lifecycles, and \cite{szabo2008predictingpopularityonlinecontent} predicts the long-term popularity of online content from early access patterns. These validate our approach to measuring the growth and decay phases of digital trends, but also show that studies have not measured if average trend survival curves are shrinking globally.
+% \end{itemize}
+
+%   \subsubsection{Methodological Foundations}
+% \begin{itemize}
+%     \item \textbf{Topic Modeling:} Traditional models like LDA \cite{blei2003latent} struggle with short, noisy social media text \cite{10.1145/1964858.1964870}. Addressing this, \cite{grootendorst2022bertopicneuraltopicmodeling} introduced BERTopic, leveraging transformer embeddings and class-based TF-IDF. 
+%     % ===> CHANGED: Streamlined the UMAP addition.
+%     To map these high dimensional embeddings for visual analysis, we may apply UMAP \cite{mcinnes2018umap} prior to clustering to preserve the data's local and global topology.
+%  \item \textbf{Clustering Behaviors:} Online engagement is a finite resource with distinct allocation patterns \cite{boik2016empirical}. To group these patterns across regions, density-based algorithms like DBSCAN \cite{ester1996density} are highly effective. Unlike K-Means, DBSCAN identifies naturally shaped clusters without pre-defining group counts, enabling the discovery of cross-national attention archetypes. 
+%  \item \textbf{Visualizations:} We could use ThemeRivers \cite{885098} or Streamgraphs to encode the changing volume and composition of trending topics over our 2022-2025 dataset.
+% \end{itemize}
+
+% \subsection{Who cares?}
+% \begin{itemize}
+% \item \textbf{Cognitive Scientists:} Gain macro-scale data on how algorithms condition users toward shallow engagement (the `brainrot' phenomenon) \cite{10457053}.
+% \item \textbf{Policymakers \& Regulators:} Benefit from empirical audits of YouTube's global agenda to support algorithmic accountability discussions.
+% \item \textbf{Sociologists:} Informs longstanding debates on whether the Internet fosters a cosmopolitan world or actively homogenizes unique cultures into a global monoculture.
+
+% \end{itemize}
+\section{Problem Definition}
+We study whether YouTube trending across countries and years is becoming more concentrated and more alike, and how long individual trends stay on the list. Concretely, we need comparable text representations across languages, interpretable sub-themes within major categories, country level groupings that reflect more than raw category mix, and simple platform-level metrics that track diversity and similarity over time. The midterm work below covers the embedding and topic pipeline, plus survival on trending duration, DBSCAN country clusters, and convergence style metrics.
+
+\section{Literature Survey}
+\subsection{How is it done today; what are the limits of current practice?}
+\subsubsection{Algorithmic Homogenization \& Platform Audits: }
+\hspace{1pt} \cite{Chaney_2018} models how recommendation systems create feedback loops that homogenize user behavior over time, while \cite{doi:10.1073/pnas.2213020120} audits YouTube's recommendation algorithm using automated `sock-puppet' accounts to test whether it drives users into ``filter bubbles'' or ideological rabbit holes. However, these approaches rely on simulated environments \cite{Chaney_2018} or fake accounts \cite{doi:10.1073/pnas.2213020120}, which may not capture the organic global agenda.
+
+\subsubsection{Cross-Cultural Content Diffusion:}
+\hspace{1pt} YouTube consumption remains heavily regionalized by geography and language \cite{10.1145/2187836.2187870, 10.1371/journal.pone.0278594}, while cross-border diffusion is shaped by cultural alignment. \cite{10.1371/journal.pone.0177865} shows that popular video overlap is largely limited to countries sharing `cosmopolitan' values. Structural studies identify `bridge' nations that connect regions \cite{Platt2015TheIA} and `small-world' paths in related-video graphs \cite{4539688}. Our approach applies NLP to a 3-year longitudinal dataset \cite{Dataset} to identify the textual themes that cross borders.
+
+\subsubsection{Modelling Attention Lifecycles:}
+\hspace{1pt} Lifecycle modeling has focused on predicting popularity of \textit{individual} videos for caching or marketing. \cite{Crane_2008} models YouTube attention through endogenous and exogenous bursts, \cite{Yu_Xie_Sanner_2021} maps multi-phase popularity lifecycles, and \cite{szabo2008predictingpopularityonlinecontent} predicts long-term popularity from early access patterns. These studies do not, however, examine whether average trend survival curves are shrinking globally.
+
+\subsubsection{Methodological Foundations:}
+\hspace{1pt} Traditional topic models such as LDA \cite{blei2003latent} struggle with short and noisy social media text \cite{10.1145/1964858.1964870}. In contrast, \cite{grootendorst2022bertopicneuraltopicmodeling} introduces BERTopic, which uses transformer embeddings and class-based TF-IDF. We plan to use UMAP \cite{mcinnes2018umap} before density-based clustering. For country-level structure we use DBSCAN \cite{ester1996density}, which avoids fixing the number of clusters in advance \cite{boik2016empirical}. For communicating how topic mix shifts over time we rely on line plots and stream-style figures in the dashboard rather than only tables.
+
+\subsection{Who cares?}
+\textbf{Cognitive scientists} gain macro-scale evidence on how algorithms may condition users toward shallow engagement (the `brainrot' phenomenon) \cite{10457053}. \textbf{Policymakers \& regulators} benefit from empirical audits of YouTube's global agenda for algorithmic accountability discussions. \textbf{Sociologists} gain evidence for debates on whether the Internet fosters a cosmopolitan world or homogenizes distinct cultures into a global monoculture.
+
+
+\section{Proposed method}
+
+\subsection{Data Engineering Pipeline}
+To overcome hardware limitations and temporal redundancy, our out-of-core pipeline avoids exhaustive daily logs by distilling each video's lifespan into three key milestones: entry, peak, and exit. 
+
+The data pipeline is an optimized multi-stage process. Raw trending records are joined against a cached aggregation of nested tags and streamed locally in 1M row partitions. We map this dataset to strictly typed \texttt{Parquet} formats via Dask, calculating lifecycle metrics like \texttt{time\_to\_trend} and \texttt{trending\_duration}. We then enrich the dataset by joining in external channel-level subscriber statistics. Following milestone reduction, textual fields (title and tags) undergo baseline normalization, specifically URL stripping and whitespace collapsing, to yield a unified \texttt{text\_for\_nlp} corpus. We intentionally omitted traditional NLP stopword removal, as our downstream BERT embeddings require full syntactical context for accurate topic modeling. 
+
+We also used the Youtube Data API v3 for data integration. We went through all the unique channel IDs in the dataset and queried the endpoint. Efficiency was achieved via batching the requests into chunks of 50 and results were then cached in a SQLite database to prevent unnecessary API calls. This also allowed us to pause and resume the process. This added 4 different columns into our dataset: channel\_name, subscriber\_count, channel\_video\_count, and channel\_view\_count. These fields were then merged back into the final dataset using \texttt{channel\_id} as the key.
+
+
+% We encode each video’s \texttt{text\_for\_nlp} field using 
+% \texttt{paraphrase-\allowbreak multilingual-\allowbreak MiniLM-\allowbreak L12-\allowbreak v2}, which produces 384 dimensional L2 normalized embeddings. We use a multilingual model because the dataset spans 104 countries and includes text in many languages. Inference was run on Apple Silicon through MPS with batch size 256, and processing roughly 726k rows took about one hour. We store the embeddings once as a single \texttt{float32} matrix and reuse them across downstream models to keep experiments consistent and efficient.
+
+% \subsection{Per-Category BERTopic Sub-themes}
+
+% Our first BERTopic run on the full multilingual dataset assigned nearly half of the videos to the noise cluster. In many cases, videos about the same event were grouping by language rather than by theme. To address this, we fit BERTopic separately within the five largest YouTube categories: Entertainment, People \& Blogs, Sports, Gaming, and Music.
+
+% For each category, we reduced the sentence embeddings to five dimensions with UMAP using \texttt{n\_neighbors=15}, \texttt{min\_dist=0.0}, cosine distance, and a fixed seed. We then clustered with HDBSCAN, labeled topics with class-based TF-IDF, and applied BERTopic’s \texttt{reduce\_outliers} step with a cosine threshold of 0.5.
+
+% This reduced noise substantially. In Entertainment, the noise rate fell from about 53\% to about 17\%. The other four categories also improved, ending in the single digits or low teens. Figure~\ref{fig:bertopic_summary} summarizes topic counts and noise levels before and after outlier reduction.
+
+% \begin{table}[ht]
+% \centering
+% \small
+% \caption{BERTopic results per category before and after embedding-based outlier reduction.}
+% \label{tab:bertopic}
+% \resizebox{\linewidth}{!}{%
+% \begin{tabular}{lrrrr}
+% \hline
+% \textbf{Category} & \textbf{Documents} & \textbf{Topics} & \textbf{Noise Before} & \textbf{Noise After} \\
+% \hline
+% Entertainment   & 205,063 & 26 & 52.7\% & 17.1\% \\
+% People \& Blogs & 98,664  & 50 & 50.6\% &  9.7\%  \\
+% Sports          & 86,201  & 84 & 47.9\% &  6.7\%  \\
+% Gaming          & 79,790  & 99 & 50.9\% &  6.6\%  \\
+% Music           & 70,943  & 73 & 49.6\% &  7.7\%  \\
+% \hline
+% \end{tabular}%
+% }
+% \end{table}
+
+
+
+% \subsection{Kaplan-Meier Survival Analysis}
+
+% \begin{table}[H]
+% \centering
+% \small
+% \caption{Median trending duration by year (Kaplan-Meier).}
+% \label{tab:km}
+% \begin{tabular}{lc}
+% \hline
+% \textbf{Year} & \textbf{Median Trending Duration} \\
+% \hline
+% 2022 & 8.00 days \\
+% 2023 & 8.75 days \\
+% 2024 & 10.75 days \\
+% 2025 & 10.50 days \\
+% \hline
+% \end{tabular}
+% \end{table}
+
+% We apply survival analysis to \texttt{trending\_duration} to study how quickly videos leave trending lists over time. We treat exit from trending as the event and duration in hours as the survival time. Because every \((\text{video}, \text{country})\) pair has a confirmed exit point, no censoring is needed.
+
+% We fit \texttt{KaplanMeierFitter} curves by year, category, and region, using the top 15 countries by video count. This gives a fuller view than summary statistics alone by comparing the full duration distribution across groups. We also use log-rank tests to check whether these differences are statistically significant.
+
+
+% At the platform level, median trending duration rises from 8.0 days in 2022 to 10.75 days in 2024, then dips slightly to 10.5 days in 2025. This suggests a more complex pattern than a simple steady decline in attention span.
+
+% \subsection{DBSCAN Country Clustering}
+
+% To identify country-level attention archetypes, we built one feature vector per country and clustered them with DBSCAN. Each vector combines category shares with engagement and lifecycle features, including mean engagement depth, mean view count, mean trending duration, mean time to trend, number of distinct categories, and total video count. All features were standardized before clustering.
+
+% This lets us capture more than category mix alone. In particular, the Western Anglosphere cluster stands out mainly because of its much shorter trending duration, which suggests a faster content cycle that category shares alone would miss.
+
+% We selected $\varepsilon = 2.36$ from the $k$-distance curve and used \texttt{min\_samples=3}. The final model produced six interpretable clusters, while countries without a clear pattern were left as noise.
+
+% \begin{table}[ht]
+% \centering
+% \small
+% \caption{DBSCAN country archetypes ($\varepsilon=2.36$, \texttt{min\_samples=3}, 21-feature vectors).}
+% \label{tab:dbscan}
+% \resizebox{\linewidth}{!}{%
+% \begin{tabular}{p{0.9in}cp{1.2in}p{1.4in}}
+% \hline
+% \textbf{Cluster} & \textbf{n} & \textbf{Members} & \textbf{Distinguishing Profile} \\
+% \hline
+% 0 --- Gulf/Middle East    & 15 & AE, BH, DZ, EG, IQ, JO, KW, LB, LY, MA, OM, QA, SA, TN, YE & Highest engagement (0.006); fast time-to-trend (22.7 hrs) \\
+% 1 --- Latin America A     & 9  & AR, CR, DO, GT, HN, MX, NI, PA, UY                           & High Music share; fast time-to-trend (21.9 hrs) \\
+% 2 --- W. Anglosphere      & 7  & AT, AU, CA, DE, FR, GB, US                                   & Shortest duration (148 hrs); fastest content cycle \\
+% 3 --- Central/East Europe & 15 & BA, BE, BG, CH, CZ, GR, HR, IL, LI, ME, MK, NL, RS, SI, SK & Highest views (4.35M); slow time-to-trend (71.3 hrs) \\
+% 4 --- Latin America B     & 6  & BO, CL, CO, EC, PE, PY                                       & Moderate profile; 14 distinct categories \\
+% 5 --- Nordic/Oceania      & 5  & DK, IE, NO, NZ, SE                                           & Highest views (4.36M); slow time-to-trend (71.8 hrs) \\
+% Noise                     & 47 & Asia, Sub-Saharan Africa, Eastern Europe                     & No dominant archetype \\
+% \hline
+% \end{tabular}%
+% }
+% \end{table}
+
+% \subsection{Convergence Metrics}
+
+% We use five platform-level metrics to test whether YouTube trending is becoming more similar over time (Table~\ref{tab:convergence}). To get a finer view, we also compute post-processing Shannon entropy for BERTopic sub-themes within each category and year (Table~\ref{tab:entropy}). Looking at categories separately is useful because it reveals a pattern that a single global score can hide: all five major categories peak in 2023 and then decline in 2024 and 2025. This suggests a brief rise in topic variety followed by renewed concentration across the platform.
+
+% \begin{table}[ht]
+% \centering
+% \small
+% \caption{Platform-level convergence metrics, 2022--2025.}
+% \label{tab:convergence}
+% \resizebox{\linewidth}{!}{%
+% \begin{tabular}{lccccc}
+% \hline
+% \textbf{Metric} & \textbf{2022} & \textbf{2023} & \textbf{2024} & \textbf{2025} & \textbf{Direction} \\
+% \hline
+% Shannon entropy (category)      & 3.140 & 3.122 & 3.120 & 3.116 & $\downarrow$ Slight decline \\
+% Distinct categories per year    & 15    & 15    & 15    & 15    & $\rightarrow$ Flat \\
+% Top-3 category share            & 53.4\%& 54.1\%& 56.6\%& 56.6\%& $\uparrow$ Concentrating \\
+% Cross-country cosine similarity & 0.849 & 0.856 & 0.867 & 0.853 & $\rightarrow$ Flat \\
+% Annual churn turnover ratio     & 2.015 & 2.056 & 2.062 & 2.103 & $\uparrow$ Slight increase \\
+% \hline
+% \end{tabular}%
+% }
+% \end{table}
+
+% \begin{table}[ht]
+% \centering
+% \small
+% \caption{Sub-topic Shannon entropy by category and year (post-outlier-reduction).}
+% \label{tab:entropy}
+% \resizebox{\linewidth}{!}{%
+% \begin{tabular}{lrrrrp{1.2in}}
+% \hline
+% \textbf{Category} & \textbf{2022} & \textbf{2023} & \textbf{2024} & \textbf{2025} & \textbf{Net Change} \\
+% \hline
+% Entertainment   & 2.227 & 2.319 & 2.259 & 2.224 & $-0.003$ (flat) \\
+% People \& Blogs & 4.867 & 4.890 & 4.868 & 4.844 & $-0.023$ (flat) \\
+% Sports          & 5.465 & 5.484 & 5.469 & 5.381 & $-0.084$ (slight decline) \\
+% Gaming          & 6.049 & 6.068 & 6.021 & 5.977 & $-0.072$ (declining) \\
+% Music           & 5.542 & 5.560 & 5.472 & 5.453 & $-0.089$ (declining) \\
+% \hline
+% \end{tabular}%
+% }
+% \end{table}
+
+\subsection{Embeddings and Topic Modeling}
+
+We encode each video's \texttt{text\_for\_nlp} field using 
+\texttt{\seqsplit{paraphrase-multilingual-MiniLM-L12-v2}}, 
+producing 384 dimensional L2 normalized embeddings. We use a multilingual model because the dataset spans 104 countries and many languages. Inference was run on Apple Silicon through MPS (batch size 256), processing roughly 726k rows in about one hour. We store the embeddings once as a single \texttt{float32} matrix to keep downstream experiments consistent and efficient.
+
+Our first BERTopic run on the full dataset assigned nearly half the videos to the noise cluster, often grouping by language rather than theme. To address this, we fit BERTopic separately within the five largest categories. We reduced embeddings to five dimensions with UMAP (\texttt{n\_neighbors=15}, \texttt{min\_dist=0.0}, fixed seed), clustered with HDBSCAN, labeled topics with class based TF-IDF, and applied BERTopic’s \texttt{reduce\_outliers} step (cosine threshold 0.5). This reduced noise substantially, falling from 53\% to 17\% in Entertainment, and to single digits elsewhere. Table~\ref{tab:bertopic} summarizes this.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{BERTopic results per category before and after embedding-based outlier reduction.}
+\label{tab:bertopic}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\hline
+\textbf{Category} & \textbf{Documents} & \textbf{Topics} & \textbf{Noise Before} & \textbf{Noise After} \\
+\hline
+Entertainment   & 205,063 & 26 & 52.7\% & 17.1\% \\
+People \& Blogs & 98,664  & 50 & 50.6\% &  9.7\%  \\
+Sports          & 86,201  & 84 & 47.9\% &  6.7\%  \\
+Gaming          & 79,790  & 99 & 50.9\% &  6.6\%  \\
+Music           & 70,943  & 73 & 49.6\% &  7.7\%  \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Attention Lifecycles and Country Clustering}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Median trending duration by year (Kaplan-Meier).}
+\label{tab:km}
+\begin{tabular}{lc}
+\hline
+\textbf{Year} & \textbf{Median Trending Duration} \\
+\hline
+2022 & 8.00 days \\
+2023 & 8.75 days \\
+2024 & 10.75 days \\
+2025 & 10.50 days \\
+\hline
+\end{tabular}
+\end{table}
+
+We apply survival analysis to \texttt{trending\_duration} to study how quickly videos leave trending lists. We treat exit as the event and duration in hours as survival time; no censoring is needed as every (video, country) pair has a confirmed exit. We fit \texttt{KaplanMeierFitter} curves by year, category, and region using log-rank tests for significance. Platform level median trending duration rises from 8.0 days in 2022 to 10.75 days in 2024, then dips to 10.5 days in 2025, suggesting a complex pattern rather than a simple steady decline in attention span.
+
+To complement the survival analysis, we measure trending churn - defined 
+as the ratio of total videos currently on the trending list to new videos 
+entering that day as a direct operationalization of list rotation speed. 
+Figure~\ref{fig:churn} shows daily churn and its 7-day rolling average 
+across the full 2022--2025 observation window. The baseline churn ratio 
+rises gradually from approximately 40--45$\times$ in mid-2022 to 
+65--70$\times$ by mid-2025, corroborating the Kaplan-Meier finding that 
+videos are occupying trending lists for longer durations over time. Two 
+anomalous spikes in January and April 2023---where churn briefly exceeds 
+200--350$\times$---coincide with days of abnormally low new video entry, 
+suggesting either data collection gaps or rare algorithmic freezes rather 
+than sustained behavioral shifts.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{churn.png}
+    \caption{Trending churn ratio (2022--2025). Light green shows daily 
+    churn; dark green shows the 7-day rolling average.}
+    \label{fig:churn}
+\end{figure}
+To identify country level attention archetypes, we built 21-feature vectors per country by combining category shares with engagement, view counts, and lifecycle features and clustered them with DBSCAN. This captures more than category mix alone. For instance, the Western Anglosphere cluster stands out because of its much shorter trending duration, suggesting a faster content cycle. Using $\varepsilon = 2.36$ and \texttt{min\_samples=3}, the model produced six interpretable clusters, leaving countries without a clear pattern as noise (Table 3).
+
+\begin{table}[ht]
+\centering
+\small
+\caption{DBSCAN country archetypes ($\varepsilon=2.36$, \texttt{min\_samples=3}, 21-feature vectors).}
+\label{tab:dbscan}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{p{0.9in}cp{1.2in}p{1.4in}}
+\hline
+\textbf{Cluster} & \textbf{n} & \textbf{Members} & \textbf{Distinguishing Profile} \\
+\hline
+0 --- Gulf/Middle East    & 15 & AE, BH, DZ, EG, IQ, JO, KW, LB, LY, MA, OM, QA, SA, TN, YE & Highest engagement (0.006); fast time-to-trend (22.7 hrs) \\
+1 --- Latin America A     & 9  & AR, CR, DO, GT, HN, MX, NI, PA, UY                           & High Music share; fast time-to-trend (21.9 hrs) \\
+2 --- W. Anglosphere      & 7  & AT, AU, CA, DE, FR, GB, US                                   & Shortest duration (148 hrs); fastest content cycle \\
+3 --- Central/East Europe & 15 & BA, BE, BG, CH, CZ, GR, HR, IL, LI, ME, MK, NL, RS, SI, SK & Highest views (4.35M); slow time-to-trend (71.3 hrs) \\
+4 --- Latin America B     & 6  & BO, CL, CO, EC, PE, PY                                       & Moderate profile; 14 distinct categories \\
+5 --- Nordic/Oceania      & 5  & DK, IE, NO, NZ, SE                                           & Highest views (4.36M); slow time-to-trend (71.8 hrs) \\
+Noise                     & 47 & Asia, Sub-Saharan Africa, Eastern Europe                     & No dominant archetype \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
+To examine structural similarity between national trending ecosystems, we build a similarity network (fig.~\ref{fig:country_similarity_network_grid}). Nodes represent countries, and edges connect countries with similar trending content profiles based on cosine similarity of aggregated attention features, including category distributions, engagement depth, and lifecycle statistics. Node colors indicate regional groupings.
+
+The network largely reproduces the regional archetypes identified by DBSCAN clustering. Countries in the same cluster appear as dense subgraphs, reflecting strong similarity in their trending content profiles. For example, Latin American countries form a tightly connected component, while Anglosphere and Western European countries cluster together elsewhere in the graph. The network also highlights bridge countries linking clusters, revealing grades of similarity that can't be captured by discrete clustering alone.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{fig/country_similarity_network_grid.png}
+\caption{
+    Evolution of country-level trending similarity networks from 2022–2025
+}
+\label{fig:country_similarity_network_grid}
+\end{figure}
+
+
+
+\subsection{Convergence Metrics}
+
+We use five platform-level metrics to test whether YouTube trending is becoming more similar over time (Table~\ref{tab:convergence}). The two most interpretable signals are visualized in Fig. 3; the combined share of the top-3 categories rises from 53.4\% to 56.6\% over the same period. These metrics are complementary: entropy captures the spread of attention across all 15 categories, whereas top-3 concentration isolates where mass is concentrated. To get a finer view, we also compute post-reduction Shannon entropy for BERTopic sub-themes within each category. Looking at categories separately reveals a pattern that a single global score hides: all five major categories peak in sub-topic variety in 2023 and then decline through 2024 and 2025, suggesting a brief rise in topic variety followed by renewed concentration across the platform. All five categories following the same trajectory despite serving different linguistic and geographic audiences suggests that the underlying cause is platform wide rather than culturally specific.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Platform-level convergence metrics, 2022--2025.}
+\label{tab:convergence}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccc}
+\hline
+\textbf{Metric} & \textbf{2022} & \textbf{2023} & \textbf{2024} & \textbf{2025} & \textbf{Direction} \\
+\hline
+Shannon entropy (category)      & 3.140 & 3.122 & 3.120 & 3.116 & $\downarrow$ Slight decline \\
+Distinct categories per year    & 15    & 15    & 15    & 15    & $\rightarrow$ Flat \\
+Top-3 category share            & 53.4\%& 54.1\%& 56.6\%& 56.6\%& $\uparrow$ Concentrating \\
+Cross-country cosine similarity & 0.849 & 0.856 & 0.867 & 0.853 & $\rightarrow$ Flat \\
+Annual churn turnover ratio     & 2.015 & 2.056 & 2.062 & 2.103 & $\uparrow$ Slight increase \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{fig/entropy_top_3.png}
+\caption{Attention is Concentrating: Entropy Decline and Top-3 Category Dominance (2022–2025)}
+\label{fig:engagement_depth}
+\end{figure}
+
+
+
+
+
+% \section{Evaluation}
+
+% \subsection{Implementation Framework}
+
+% We processed the dataset locally using Dask with partitioned out-of-core execution. Early runs exposed parsing and memory issues caused by multi-line descriptions and nested tag fields in the raw CSV files. We addressed this by caching aggregated tags and streaming the data in partitions, which made the pipeline stable for the downstream topic and temporal analyses.
+
+% \label{sec:experiments}
+
+% \subsection{Survival Curve Comparison Across Archetypes and Categories}
+
+% We compare Kaplan-Meier curves across DBSCAN archetypes and content categories to test whether trend lifetimes differ across country groups. In particular, we expect the Western Anglosphere cluster to show shorter trending duration than Latin American and Gulf clusters, especially in fast-moving categories such as Gaming. Log-rank tests are used to compare the survival distributions, and this analysis helps explain why platform-level duration can increase even if some country groups rotate trends faster than others.
+
+% \subsection{Sub-topic Trend Regression}
+
+% For each major category, we model monthly sub-topic share over time using simple linear regression. This helps us identify themes that are growing, declining, or showing short-lived spikes over the 2022--2025 period. For example, we test whether Fortnite declines over time in Gaming and whether the French \textit{clip officiel} format grows within Music. The results will be shown as stream-style plots with the main trend directions annotated.
+
+% \subsection{Within-Cluster vs.\ Between-Cluster Convergence}
+
+% We compare cosine similarity in category distributions for country pairs within the same DBSCAN cluster and across different clusters. If between-cluster similarity rises while within-cluster similarity stays stable, it would suggest that previously distinct country groups are becoming more alike over time. This extends the global similarity results by showing whether convergence is broad or concentrated among specific archetypes.
+
+% \subsection{Engagement Depth as an Attention Quality Signal}
+
+% We use engagement depth, defined as comments divided by views at first appearance on trending, as a simple signal of how actively users respond to content. Figure~\ref{fig:engagement_depth} already shows that this ratio declines over time from 2022 to 2025, even while view counts remain high. We relate this trend to sub-topic entropy by testing whether categories with lower topic diversity also show lower engagement depth. A negative correlation would support the idea that increasing concentration is linked to more passive consumption. Longer trending duration together with lower engagement depth would suggest that videos remain on trending not because they generate deeper interaction, but because fewer new videos replace them.
+
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=\linewidth]{fig/engagement_trend.png}
+% \caption{Monthly average engagement depth ratio (comments divided by views) for videos at the time they first appear on the trending list.}
+% \label{fig:engagement_depth}
+% \end{figure}
+
+% \subsection{Evaluation Criteria}
+
+% For each analysis, we report both statistical significance and effect size. We use corrected p-values where needed, along with RMST differences for survival analysis, $R^2$ for trend regression, and Pearson $r$ for the engagement analysis. The dashboard acts as the main evaluation interface, with views that can be filtered by country, year, category, and archetype.
+\section{Evaluation}
+
+\subsection{Implementation and Proposed Experiments}
+\label{sec:experiments}
+
+We processed the dataset locally using Dask with partitioned out-of-core execution. By caching aggregated tags and streaming data, we resolved memory issues caused by nested fields, stabilizing the pipeline. For our analyses, we report both statistical significance and effect size using corrected p-values, RMST differences for survival analysis, $R^2$ for trend regression, and Pearson $r$ for the engagement analysis. The interactive dashboard acts as the main evaluation interface. Our experiments include:
+
+\begin{itemize}
+    \item \textbf{Survival Curve Comparisons:} We compare \\ Kaplan-Meier curves across DBSCAN archetypes to test whether trend lifetimes differ across country groups. We expect the Western Anglosphere to show shorter trending durations than Latin American and Gulf clusters, especially in fast-moving categories like Gaming.
+    \item \textbf{Sub-topic Trend Regression:} We model monthly sub-topic share over time using simple linear regression to identify themes that are growing, declining, or showing short-lived spikes over the 2022--2025 period (e.g., whether Fortnite declines in Gaming). Results will be shown as stream-style plots with the main trend directions annotated.
+    \item \textbf{Within vs.\ Between-Cluster Convergence:} We compare cosine similarity in category distributions for country pairs within the same DBSCAN cluster and across different clusters. If between cluster similarity rises while within cluster similarity stays stable, it would suggest that previously distinct country groups are becoming more alike over time.
+    \item \textbf{Engagement Depth Analysis:} We use engagement depth, defined as comments divided by views at first appearance on trending. Figure~\ref{fig:engagement_depth} shows this ratio declining over time from 2022 to 2025. We relate this trend to sub-topic entropy; a negative correlation would support the idea that increasing concentration is linked to more passive consumption. Longer trending duration together with lower engagement depth would suggest that videos remain on trending not because they generate deeper interaction, but because fewer new videos replace them.
+\end{itemize}
+\vspace{-10pt}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{fig/engagement_trend.png}
+\caption{Monthly average engagement depth ratio (comments divided by views) for videos at the time they first appear on the trending list}
+\label{fig:engagement_depth}
+\end{figure}
+
+% \section{Conclusions and Discussion}
+
+% \subsection{Conclusions}
+
+% [add stuff]
+
+\section{How long will it take?} 
+% \begin{enumerate}
+%     \item  Weeks 1--2: This period will consist of data cleaning and integration, along with other ingestion workflows. We will then prepare the final data set to be analyzed. 
+%     \item  Weeks 3--4: We will run the preliminary algorithms and train the topic models. Next, we will compute the core metrics like topic concentration and country similarity. We will also measure churn and trending lifespan.
+%     \item Weeks 5--7: The results will be ready for visualization. We will spend this time building the interactive visual analytics system.
+%     \item Week 8: We will finalize all deliverables and run any remaining evaluations. We will complete our reports and package the final submissions.
+% \end{enumerate}
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l l l}
+\hline
+Member & Activity & Time \\
+\hline
+Murali & Data pipeline, algorithms & W1--4 \\
+Bhawna & Cleaning, feature prep & W1--4 \\
+Vishnu & Validation, preprocessing & W1--4 \\
+Ashutosh & Topic modeling & W3--4 \\
+Rahul & Similarity \& trend models & W3--4 \\
+Sheyril & Visualization design & W3--4 \\
+All members & System integration, evaluation, report & W5--8 \\
+\hline
+\end{tabular}
+\end{table}
+All team members have, and will continue to, contribute equal effort to the project.
+% \section{{What are the midterm and final ``exams'' to check for success?} } 
+% \begin{itemize}
+%     \item  Midterm: A working pipeline along with at least one topic model that can produce sensible topics. We also expect to have a basic dashboard with a couple views working fully. 
+%     \item  Final: Full dashboard is ready with all the necessary views connected and an evaluation pipeline, plus a short results section with all the main metrics. 
+% \end{itemize}
+
+% \section{Authors and Affiliations}
+
+% Each author must be defined separately for accurate metadata
+% identification. Multiple authors may share one affiliation. Authors'
+% names should not be abbreviated; use full first names wherever
+% possible. Include authors' e-mail addresses whenever possible.
+
+% Grouping authors' names or e-mail addresses, or providing an ``e-mail
+% alias,'' as shown below, is not acceptable:
+% \begin{verbatim}
+%   \author{Brooke Aster, David Mehldau}
+%   \email{dave,judy,steve@university.edu}
+%   \email{firstname.lastname@phillips.org}
+% \end{verbatim}
+
+% The \verb|authornote| and \verb|authornotemark| commands allow a note
+% to apply to multiple authors --- for example, if the first two authors
+% of an article contributed equally to the work.
+
+% If your author list is lengthy, you must define a shortened version of
+% the list of authors to be used in the page headers, to prevent
+% overlapping text. The following command should be placed just after
+% the last \verb|\author{}| definition:
+% \begin{verbatim}
+%   \renewcommand{\shortauthors}{McCartney, et al.}
+% \end{verbatim}
+% Omitting this command will force the use of a concatenated list of all
+% of the authors' names, which may result in overlapping text in the
+% page headers.
+
+% The article template's documentation, available at
+% \url{https://www.acm.org/publications/proceedings-template}, has a
+% complete explanation of these commands and tips for their effective
+% use.
+
+% Note that authors' addresses are mandatory for journal articles.
+
+% \section{Rights Information}
+
+% Authors of any work published by ACM will need to complete a rights
+% form. Depending on the kind of work, and the rights management choice
+% made by the author, this may be copyright transfer, permission,
+% license, or an OA (open access) agreement.
+
+% Regardless of the rights management choice, the author will receive a
+% copy of the completed rights form once it has been submitted. This
+% form contains \LaTeX\ commands that must be copied into the source
+% document. When the document source is compiled, these commands and
+% their parameters add formatted text to several areas of the final
+% document:
+% \begin{itemize}
+% \item the ``ACM Reference Format'' text on the first page.
+% \item the ``rights management'' text on the first page.
+% \item the conference information in the page header(s).
+% \end{itemize}
+
+% Rights information is unique to the work; if you are preparing several
+% works for an event, make sure to use the correct set of commands with
+% each of the works.
+
+% The ACM Reference Format text is required for all articles over one
+% page in length, and is optional for one-page articles (abstracts).
+
+% \section{CCS Concepts and User-Defined Keywords}
+
+% Two elements of the ``acmart'' document class provide powerful
+% taxonomic tools for you to help readers find your work in an online
+% search.
+
+% The ACM Computing Classification System ---
+% \url{https://www.acm.org/publications/class-2012} --- is a set of
+% classifiers and concepts that describe the computing
+% discipline. Authors can select entries from this classification
+% system, via \url{https://dl.acm.org/ccs/ccs.cfm}, and generate the
+% commands to be included in the \LaTeX\ source.
+
+% User-defined keywords are a comma-separated list of words and phrases
+% of the authors' choosing, providing a more flexible way of describing
+% the research being presented.
+
+% CCS concepts and user-defined keywords are required for for all
+% articles over two pages in length, and are optional for one- and
+% two-page articles (or abstracts).
+
+% \section{Sectioning Commands}
+
+% Your work should use standard \LaTeX\ sectioning commands:
+% \verb|section|, \verb|subsection|, \verb|subsubsection|, and
+% \verb|paragraph|. They should be numbered; do not remove the numbering
+% from the commands.
+
+% Simulating a sectioning command by setting the first word or words of
+% a paragraph in boldface or italicized text is {\bfseries not allowed.}
+
+% \section{Tables}
+
+% The ``\verb|acmart|'' document class includes the ``\verb|booktabs|''
+% package --- \url{https://ctan.org/pkg/booktabs} --- for preparing
+% high-quality tables.
+
+% Table captions are placed {\itshape above} the table.
+
+% Because tables cannot be split across pages, the best placement for
+% them is typically the top of the page nearest their initial cite.  To
+% ensure this proper ``floating'' placement of tables, use the
+% environment \textbf{table} to enclose the table's contents and the
+% table caption.  The contents of the table itself must go in the
+% \textbf{tabular} environment, to be aligned properly in rows and
+% columns, with the desired horizontal and vertical rules.  Again,
+% detailed instructions on \textbf{tabular} material are found in the
+% \textit{\LaTeX\ User's Guide}.
+
+% Immediately following this sentence is the point at which
+% Table~\ref{tab:freq} is included in the input file; compare the
+% placement of the table here with the table in the printed output of
+% this document.
+
+% \begin{table}
+%   \caption{Frequency of Special Characters}
+%   \label{tab:freq}
+%   \begin{tabular}{ccl}
+%     \toprule
+%     Non-English or Math&Frequency&Comments\\
+%     \midrule
+%     \O & 1 in 1,000& For Swedish names\\
+%     $\pi$ & 1 in 5& Common in math\\
+%     \$ & 4 in 5 & Used in business\\
+%     $\Psi^2_1$ & 1 in 40,000& Unexplained usage\\
+%   \bottomrule
+% \end{tabular}
+% \end{table}
+
+% To set a wider table, which takes up the whole width of the page's
+% live area, use the environment \textbf{table*} to enclose the table's
+% contents and the table caption.  As with a single-column table, this
+% wide table will ``float'' to a location deemed more
+% desirable. Immediately following this sentence is the point at which
+% Table~\ref{tab:commands} is included in the input file; again, it is
+% instructive to compare the placement of the table here with the table
+% in the printed output of this document.
+
+% \begin{table*}
+%   \caption{Some Typical Commands}
+%   \label{tab:commands}
+%   \begin{tabular}{ccl}
+%     \toprule
+%     Command &A Number & Comments\\
+%     \midrule
+%     \texttt{{\char'134}author} & 100& Author \\
+%     \texttt{{\char'134}table}& 300 & For tables\\
+%     \texttt{{\char'134}table*}& 400& For wider tables\\
+%     \bottomrule
+%   \end{tabular}
+% \end{table*}
+
+% Always use midrule to separate table header rows from data rows, and
+% use it only for this purpose. This enables assistive technologies to
+% recognise table headers and support their users in navigating tables
+% more easily.
+
+% \section{Math Equations}
+% You may want to display math equations in three distinct styles:
+% inline, numbered or non-numbered display.  Each of the three are
+% discussed in the next sections.
+
+% \subsection{Inline (In-text) Equations}
+% A formula that appears in the running text is called an inline or
+% in-text formula.  It is produced by the \textbf{math} environment,
+% which can be invoked with the usual
+% \texttt{{\char'134}begin\,\ldots{\char'134}end} construction or with
+% the short form \texttt{\$\,\ldots\$}. You can use any of the symbols
+% and structures, from $\alpha$ to $\omega$, available in
+% \LaTeX~\cite{Lamport:LaTeX}; this section will simply show a few
+% examples of in-text equations in context. Notice how this equation:
+% \begin{math}
+%   \lim_{n\rightarrow \infty}x=0
+% \end{math},
+% set here in in-line math style, looks slightly different when
+% set in display style.  (See next section).
+
+% \subsection{Display Equations}
+% A numbered display equation---one set off by vertical space from the
+% text and centered horizontally---is produced by the \textbf{equation}
+% environment. An unnumbered display equation is produced by the
+% \textbf{displaymath} environment.
+
+% Again, in either environment, you can use any of the symbols and
+% structures available in \LaTeX\@; this section will just give a couple
+% of examples of display equations in context.  First, consider the
+% equation, shown as an inline equation above:
+% \begin{equation}
+%   \lim_{n\rightarrow \infty}x=0
+% \end{equation}
+% Notice how it is formatted somewhat differently in
+% the \textbf{displaymath}
+% environment.  Now, we'll enter an unnumbered equation:
+% \begin{displaymath}
+%   \sum_{i=0}^{\infty} x + 1
+% \end{displaymath}
+% and follow it with another numbered equation:
+% \begin{equation}
+%   \sum_{i=0}^{\infty}x_i=\int_{0}^{\pi+2} f
+% \end{equation}
+% just to demonstrate \LaTeX's able handling of numbering.
+
+% \section{Figures}
+
+% The ``\verb|figure|'' environment should be used for figures. One or
+% more images can be placed within a figure. If your figure contains
+% third-party material, you must clearly identify it as such, as shown
+% in the example below.
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=\linewidth]{fig/sample-franklin.png}
+%   \caption{1907 Franklin Model D roadster. Photograph by Harris \&
+%     Ewing, Inc. [Public domain], via Wikimedia
+%     Commons. (\url{https://goo.gl/VLCRBB}).}
+%   \Description{A woman and a girl in white dresses sit in an open car.}
+% \end{figure}
+
+% Your figures should contain a caption which describes the figure to
+% the reader.
+
+% Figure captions are placed {\itshape below} the figure.
+
+% Every figure should also have a figure description unless it is purely
+% decorative. These descriptions convey what’s in the image to someone
+% who cannot see it. They are also used by search engine crawlers for
+% indexing images, and when images cannot be loaded.
+
+% A figure description must be unformatted plain text less than 2000
+% characters long (including spaces).  {\bfseries Figure descriptions
+%   should not repeat the figure caption – their purpose is to capture
+%   important information that is not already provided in the caption or
+%   the main text of the paper.} For figures that convey important and
+% complex new information, a short text description may not be
+% adequate. More complex alternative descriptions can be placed in an
+% appendix and referenced in a short figure description. For example,
+% provide a data table capturing the information in a bar chart, or a
+% structured list representing a graph.  For additional information
+% regarding how best to write figure descriptions and why doing this is
+% so important, please see
+% \url{https://www.acm.org/publications/taps/describing-figures/}.
+
+% \subsection{The ``Teaser Figure''}
+
+% A ``teaser figure'' is an image, or set of images in one figure, that
+% are placed after all author and affiliation information, and before
+% the body of the article, spanning the page. If you wish to have such a
+% figure in your article, place the command immediately before the
+% \verb|\maketitle| command:
+% \begin{verbatim}
+%   \begin{teaserfigure}
+%     \includegraphics[width=\textwidth]{sampleteaser}
+%     \caption{figure caption}
+%     \Description{figure description}
+%   \end{teaserfigure}
+% \end{verbatim}
+
+% \section{Citations and Bibliographies}
+
+% The use of \BibTeX\ for the preparation and formatting of one's
+% references is strongly recommended. Authors' names should be complete
+% --- use full first names (``Donald E. Knuth'') not initials
+% (``D. E. Knuth'') --- and the salient identifying features of a
+% reference should be included: title, year, volume, number, pages,
+% article DOI, etc.
+
+% The bibliography is included in your source document with these two
+% commands, placed just before the \verb|\end{document}| command:
+% \begin{verbatim}
+%   \bibliographystyle{ACM-Reference-Format}
+%   \bibliography{bibfile}
+% \end{verbatim}
+% where ``\verb|bibfile|'' is the name, without the ``\verb|.bib|''
+% suffix, of the \BibTeX\ file.
+
+% Citations and references are numbered by default. A small number of
+% ACM publications have citations and references formatted in the
+% ``author year'' style; for these exceptions, please include this
+% command in the {\bfseries preamble} (before the command
+% ``\verb|\begin{document}|'') of your \LaTeX\ source:
+% \begin{verbatim}
+%   \citestyle{acmauthoryear}
+% \end{verbatim}
+
+%   Some examples.  A paginated journal article \cite{Abril07}, an
+%   enumerated journal article \cite{Cohen07}, a reference to an entire
+%   issue \cite{JCohen96}, a monograph (whole book) \cite{Kosiur01}, a
+%   monograph/whole book in a series (see 2a in spec. document)
+%   \cite{Harel79}, a divisible-book such as an anthology or compilation
+%   \cite{Editor00} followed by the same example, however we only output
+%   the series if the volume number is given \cite{Editor00a} (so
+%   Editor00a's series should NOT be present since it has no vol. no.),
+%   a chapter in a divisible book \cite{Spector90}, a chapter in a
+%   divisible book in a series \cite{Douglass98}, a multi-volume work as
+%   book \cite{Knuth97}, a couple of articles in a proceedings (of a
+%   conference, symposium, workshop for example) (paginated proceedings
+%   article) \cite{Andler79, Hagerup1993}, a proceedings article with
+%   all possible elements \cite{Smith10}, an example of an enumerated
+%   proceedings article \cite{VanGundy07}, an informally published work
+%   \cite{Harel78}, a couple of preprints \cite{Bornmann2019,
+%     AnzarootPBM14}, a doctoral dissertation \cite{Clarkson85}, a
+%   master's thesis: \cite{anisi03}, an online document / world wide web
+%   resource \cite{Thornburg01, Ablamowicz07, Poker06}, a video game
+%   (Case 1) \cite{Obama08} and (Case 2) \cite{Novak03} and \cite{Lee05}
+%   and (Case 3) a patent \cite{JoeScientist001}, work accepted for
+%   publication \cite{rous08}, 'YYYYb'-test for prolific author
+%   \cite{SaeediMEJ10} and \cite{SaeediJETC10}. Other cites might
+%   contain 'duplicate' DOI and URLs (some SIAM articles)
+%   \cite{Kirschmer:2010:AEI:1958016.1958018}. Boris / Barbara Beeton:
+%   multi-volume works as books \cite{MR781536} and \cite{MR781537}. A
+%   couple of citations with DOIs:
+%   \cite{2004:ITE:1009386.1010128,Kirschmer:2010:AEI:1958016.1958018}. Online
+%   citations: \cite{TUGInstmem, Thornburg01, CTANacmart}. Artifacts:
+%   \cite{R} and \cite{UMassCitations}.
+
+% \section{Acknowledgments}
+
+% Identification of funding sources and other support, and thanks to
+% individuals and groups that assisted in the research and the
+% preparation of the work should be included in an acknowledgment
+% section, which is placed just before the reference section in your
+% document.
+
+% This section has a special environment:
+% \begin{verbatim}
+%   \begin{acks}
+%   ...
+%   \end{acks}
+% \end{verbatim}
+% so that the information contained therein can be more easily collected
+% during the article metadata extraction phase, and to ensure
+% consistency in the spelling of the section heading.
+
+% Authors should not prepare this section as a numbered or unnumbered {\verb|\section|}; please use the ``{\verb|acks|}'' environment.
+
+% \section{Appendices}
+
+% If your work needs an appendix, add it before the
+% ``\verb|\end{document}|'' command at the conclusion of your source
+% document.
+
+% Start the appendix with the ``\verb|appendix|'' command:
+% \begin{verbatim}
+%   \appendix
+% \end{verbatim}
+% and note that in the appendix, sections are lettered, not
+% numbered. This document has two appendices, demonstrating the section
+% and subsection identification method.
+
+% \section{Multi-language papers}
+
+% Papers may be written in languages other than English or include
+% titles, subtitles, keywords and abstracts in different languages (as a
+% rule, a paper in a language other than English should include an
+% English title and an English abstract).  Use \verb|language=...| for
+% every language used in the paper.  The last language indicated is the
+% main language of the paper.  For example, a French paper with
+% additional titles and abstracts in English and German may start with
+% the following command
+% \begin{verbatim}
+% \documentclass[sigconf, language=english, language=german,
+%                language=french]{acmart}
+% \end{verbatim}
+
+% The title, subtitle, keywords and abstract will be typeset in the main
+% language of the paper.  The commands \verb|\translatedXXX|, \verb|XXX|
+% begin title, subtitle and keywords, can be used to set these elements
+% in the other languages.  The environment \verb|translatedabstract| is
+% used to set the translation of the abstract.  These commands and
+% environment have a mandatory first argument: the language of the
+% second argument.  See \verb|sample-sigconf-i13n.tex| file for examples
+% of their usage.
+
+% \section{SIGCHI Extended Abstracts}
+
+% The ``\verb|sigchi-a|'' template style (available only in \LaTeX\ and
+% not in Word) produces a landscape-orientation formatted article, with
+% a wide left margin. Three environments are available for use with the
+% ``\verb|sigchi-a|'' template style, and produce formatted output in
+% the margin:
+% \begin{itemize}
+% \item {\verb|sidebar|}:  Place formatted text in the margin.
+% \item {\verb|marginfigure|}: Place a figure in the margin.
+% \item {\verb|margintable|}: Place a table in the margin.
+% \end{itemize}
+
+% %%
+% %% The acknowledgments section is defined using the "acks" environment
+% %% (and NOT an unnumbered section). This ensures the proper
+% %% identification of the section in the article metadata, and the
+% %% consistent spelling of the heading.
+% \begin{acks}
+% To Robert, for the bagels and explaining CMYK and color spaces.
+% \end{acks}
+
+%%
+%% The next two lines define the bibliography style to be used, and
+%% the bibliography file.
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+% %%
+% %% If your work has an appendix, this is the place to put it.
+% \appendix
+
+% \section{Research Methods}
+
+% \subsection{Part One}
+
+% Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+% malesuada, quam in pulvinar varius, metus nunc fermentum urna, id
+% sollicitudin purus odio sit amet enim. Aliquam ullamcorper eu ipsum
+% vel mollis. Curabitur quis dictum nisl. Phasellus vel semper risus, et
+% lacinia dolor. Integer ultricies commodo sem nec semper.
+
+% \subsection{Part Two}
+
+% Etiam commodo feugiat nisl pulvinar pellentesque. Etiam auctor sodales
+% ligula, non varius nibh pulvinar semper. Suspendisse nec lectus non
+% ipsum convallis congue hendrerit vitae sapien. Donec at laoreet
+% eros. Vivamus non purus placerat, scelerisque diam eu, cursus
+% ante. Etiam aliquam tortor auctor efficitur mattis.
+
+% \section{Online Resources}
+
+% Nam id fermentum dui. Suspendisse sagittis tortor a nulla mollis, in
+% pulvinar ex pretium. Sed interdum orci quis metus euismod, et sagittis
+% enim maximus. Vestibulum gravida massa ut felis suscipit
+% congue. Quisque mattis elit a risus ultrices commodo venenatis eget
+% dui. Etiam sagittis eleifend elementum.
+
+% Nam interdum magna at lectus dignissim, ac dignissim lorem
+% rhoncus. Maecenas eu arcu ac neque placerat aliquam. Nunc pulvinar
+% massa et mattis lacinia.
+
+\end{document}
+\endinput
+%%
+%% End of file `sample-sigconf.tex'.
