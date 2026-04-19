@@ -3,6 +3,7 @@ import { TopBar } from './components/TopBar';
 import { Sidebar } from './components/Sidebar';
 import { Home } from './pages/Home';
 import { ShortsCanvas } from './pages/ShortsCanvas';
+import { VideoCanvas } from './pages/VideoCanvas';
 import './App.css';
 
 function AppContent() {
@@ -27,6 +28,8 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/liked" element={<Home likedOnly={true} />} />
+          <Route path="/videos" element={<Home videosOnly={true} />} />
+          <Route path="/video/:id" element={<VideoCanvas />} />
         </Routes>
       </div>
     </div>
