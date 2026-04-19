@@ -2,59 +2,66 @@ import { useEffect, useRef, useState } from 'react';
 import { Heart, MinusCircle, MessageCircle, Send, MoreHorizontal, ArrowLeft, Play, BarChart2, X } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { InteractiveVisualization } from '../components/InteractiveVisualization';
+import {
+  ConvergenceShort,
+  SurvivalShort,
+  BertopicShort,
+  ArchetypeShort,
+} from '../components/ShortsVisualizations';
 
 const MOCK_SHORTS_DATA = [
-  { 
-    id: 1, 
-    type: 'interactive', 
-    title: 'Global Disparity Map', 
-    resolution: 'fluid',
-    creator: '@dva_graph', 
-    desc: 'Key Insight: Notice the extreme density in Northern Europe vs South America. Interact with the countries to see granular income density distributions.',
+  {
+    id: 1,
+    type: 'interactive',
+    shortKind: 'convergence',
+    title: 'Attention is Concentrating',
+    creator: '@dva_graph',
+    desc: 'Shannon entropy drops and top-3 category share climbs across 2022–2025. Scrub the year or hit play to watch YouTube\u2019s trending attention consolidate.',
     comments: [
-      { user: '@data_scientist', text: 'Insight: If you hover over Norway, you can see the highest HDI clustering on the map. Here is a zoomed-in overlay of the cluster boundaries:', isInsight: true, image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400' },
-      { user: '@geo_master', text: 'The Mercator projection distorts the northern regions slightly, but the color scaling perfectly handles the outliers.', isInsight: false },
-      { user: '@student123', text: 'This interactive D3 map is incredibly smooth!', isInsight: false }
-    ]
+      { user: '@data_scientist', text: 'Insight: entropy falls from 3.140 → 3.116 while the top-3 share rises by ~3.3 pp. Small in absolute terms, huge given 104 countries moving together.', isInsight: true },
+      { user: '@geo_master', text: 'The parallel shift across all regions is what makes this feel platform-driven, not cultural.', isInsight: false },
+    ],
   },
-  { 
-    id: 2, 
-    type: 'video', 
-    title: 'Cluster Expansion Timelapse', 
-    creator: '@data_viz', 
-    desc: 'Insight: Cellular clusters exhibit exponential growth during week 40-50. Watch the organic clusters form, expand, and decay in real-time.',
+  {
+    id: 2,
+    type: 'interactive',
+    shortKind: 'survival',
+    title: 'Videos linger longer',
+    creator: '@dva_graph',
+    desc: 'Kaplan-Meier median trending duration jumps from 8.0 days (2022) to 10.75 days (2024). Tap a year to see that year\u2019s survival curve highlighted.',
     comments: [
-      { user: '@biologist_dave', text: 'Insight: The rapid expansion phase perfectly mirrors the theoretical logistic growth curve we studied in class.', isInsight: true },
-      { user: '@random_viewer', text: 'Wow, the simulation frames are mesmerizing.', isInsight: false }
-    ]
+      { user: '@data_scientist', text: 'Insight: log-rank p < 0.001 between 2022 and 2025 — the shift in trending lifetimes is statistically significant, not noise.', isInsight: true },
+      { user: '@student123', text: 'Does this correlate with lower engagement depth? Feels like it should.', isInsight: false },
+    ],
   },
-  { 
-    id: 3, 
-    type: 'static', 
-    title: 'Heatmap Density', 
-    creator: '@heatmap_pro', 
-    desc: 'Static snapshot of the threshold limits. Hotspots appear predominantly in urban sector blocks.',
+  {
+    id: 3,
+    type: 'interactive',
+    shortKind: 'bertopic',
+    title: 'BERTopic outlier reduction',
+    creator: '@ml_eval',
+    desc: 'Before/after noise rates for per-category BERTopic across 5 categories. Toggle the phase and pick a category — Sports drops from 47.9% to 6.7% noise.',
     comments: [
-      { user: '@heatmap_pro', text: 'Insight: Traffic density drops significantly between 2AM and 4AM across all sector blocks.', isInsight: true }
-    ]
+      { user: '@ml_eval', text: 'Insight: outlier reduction with cosine threshold 0.5 cuts avg noise from ~50% to ~11%. Biggest win: Gaming and Sports, the densest language-specific jargon.', isInsight: true },
+    ],
   },
-  { 
-    id: 4, 
-    type: 'video', 
-    title: '3D Globe Visual', 
-    resolution: 'landscape',
-    creator: '@geo_master', 
-    desc: 'Insight: Trans-Atlantic routes carry 80% more volume than Trans-Pacific in this simulation. Spinning the globe to see international shipping routes.',
+  {
+    id: 4,
+    type: 'interactive',
+    shortKind: 'archetype',
+    title: 'DBSCAN archetype profiles',
+    creator: '@ml_eval',
+    desc: 'Tap any of the 6 DBSCAN archetypes to inspect its trending duration, time-to-trend, engagement depth, and mean views — normalized against peer archetypes.',
     comments: [
-      { user: '@supply_chain', text: 'Insight: Look closely at the Suez Canal bottleneck, rendering red during peak volume hours.', isInsight: true },
-      { user: '@student_a', text: 'How did you render the 3D curves?', isInsight: false }
-    ]
+      { user: '@ml_eval', text: 'Insight: the Western Anglosphere collapses to ~148 hrs trending duration — less than half the Gulf/ME cluster (372 hrs). Fastest content cycle on the platform.', isInsight: true },
+      { user: '@geo_master', text: 'Nordic/Oceania and Central/E. Europe both land on the high-views, slow-TTT corner — different regions, same shape.', isInsight: false },
+    ],
   },
-  { 
-    id: 5, 
-    type: 'static', 
-    title: 'Time Series Peaks', 
-    creator: '@time_series', 
+  {
+    id: 5,
+    type: 'static',
+    title: 'Time Series Peaks',
+    creator: '@time_series',
     desc: 'Finding seasonality in a 10-year trend. Observe the massive dip during Q2 2020.',
     comments: [
       { user: '@market_watcher', text: 'Insight: The recovery slope post-2020 is nearly twice as steep as the decade average.', isInsight: true }
@@ -62,7 +69,17 @@ const MOCK_SHORTS_DATA = [
   },
 ];
 
-function RenderVisualizationPlaceholder({ type, id }) {
+function RenderVisualizationPlaceholder({ type, id, shortKind }) {
+  if (type === 'interactive' && shortKind) {
+    if (shortKind === 'convergence') return <ConvergenceShort />;
+    if (shortKind === 'survival') return <SurvivalShort />;
+    if (shortKind === 'bertopic') return <BertopicShort />;
+    if (shortKind === 'archetype') return <ArchetypeShort />;
+  }
+  return <RenderLegacyPlaceholder type={type} id={id} />;
+}
+
+function RenderLegacyPlaceholder({ type, id }) {
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef(null);
 
@@ -179,7 +196,7 @@ export function ShortsCanvas() {
         <div key={`${short.id}-${idx}`} className="short-player-wrapper">
           <div className="short-content-box" style={{ ...getResolutionStyle(short.resolution) }}>
             
-            <RenderVisualizationPlaceholder type={short.type} id={short.id} />
+            <RenderVisualizationPlaceholder type={short.type} id={short.id} shortKind={short.shortKind} />
             
             {/* Overlay Gradient for Text Readability */}
             <div className="shorts-card-info" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%)', paddingTop: '60px', paddingBottom: '24px', pointerEvents: 'none', zIndex: 20 }}>

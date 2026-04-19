@@ -1,15 +1,14 @@
 import { Waves, Heart, Globe2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { ShortPreview } from '../components/ShortsVisualizations';
 
 const MOCK_SHORTS = [
-  { id: 1, title: 'Network Graph Explored', views: '1.2M views' },
-  { id: 2, title: 'Heatmap Density', views: '800K views' },
-  { id: 3, title: 'Scatterplot Outliers', views: '2M views' },
-  { id: 4, title: '3D Globe Visual', views: '500K views' },
+  { id: 1, title: 'Attention is Concentrating', views: '1.2M views', kind: 'convergence' },
+  { id: 2, title: 'Videos Linger Longer', views: '800K views', kind: 'survival' },
+  { id: 3, title: 'BERTopic Noise Reduction', views: '420K views', kind: 'bertopic' },
+  { id: 4, title: 'DBSCAN Archetype Profiles', views: '2M views', kind: 'archetype' },
   { id: 5, title: 'Time Series Peaks', views: '3M views' },
-  { id: 6, title: 'Geospatial Trends', views: '2.1M views' },
-  { id: 7, title: 'Bar Chart Race', views: '9M views' },
 ];
 
 const MOCK_VIDEOS = [
@@ -89,7 +88,13 @@ export function Home({ likedOnly = false, videosOnly = false }) {
                 className="shorts-card"
                 onClick={() => navigate(`/shorts/${short.id}`)}
               >
-                <div className="shorts-thumbnail" style={{ background: `hsl(${short.id * 50}, 70%, 40%)` }}></div>
+                {short.kind ? (
+                  <div className="shorts-thumbnail shorts-thumbnail-preview">
+                    <ShortPreview kind={short.kind} />
+                  </div>
+                ) : (
+                  <div className="shorts-thumbnail" style={{ background: `hsl(${short.id * 50}, 70%, 40%)` }}></div>
+                )}
                 <div className="shorts-card-info">
                   <div className="shorts-title">{short.title}</div>
                   <div className="shorts-views">{short.views}</div>
