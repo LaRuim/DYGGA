@@ -2,14 +2,17 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Clapperboard, Upload, LayoutTemplate, Film } from 'lucide-react';
 import { InteractiveVisualization } from '../components/InteractiveVisualization';
+import { WorldMapVisualization } from '../components/WorldMapVisualization';
 
 const MOCK_VIDEO_STORIES = [
   {
     id: 1,
-    title: 'Deep Dive: Understanding the DVA Dataset Features',
-    author: 'Team Gatech',
-    description: 'Long-form walkthrough of feature engineering choices and why each signal matters.',
+    title: 'Decoding YouTube\u2019s Grip on Global Attention \u2014 DBSCAN Country Archetypes',
+    author: '',
+    description: 'Interactive world map of 104 countries grouped into 6 attention archetypes by DBSCAN on a 21-feature profile.',
+    descriptionLine2: 'Click any country to see per-country metrics, prototypicality score, and top category mix.',
     defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    visualization: 'worldmap',
   },
   {
     id: 2,
@@ -37,7 +40,7 @@ export function VideoCanvas() {
     return matched ?? MOCK_VIDEO_STORIES[0];
   }, [parsedId]);
 
-  const [contentMode, setContentMode] = useState('video');
+  const [contentMode, setContentMode] = useState(selectedVideo.visualization === 'worldmap' ? 'visual' : 'video');
   const [videoUrl, setVideoUrl] = useState(selectedVideo.defaultVideo);
 
   const onFileUpload = (event) => {
@@ -64,6 +67,10 @@ export function VideoCanvas() {
               <video controls className="video-player-element" src={videoUrl}>
                 Your browser does not support embedded video playback.
               </video>
+            ) : selectedVideo.visualization === 'worldmap' ? (
+              <div className="video-visualization-stage worldmap-stage">
+                <WorldMapVisualization />
+              </div>
             ) : (
               <div className="video-visualization-stage">
                 <InteractiveVisualization id={selectedVideo.id} />
@@ -73,7 +80,12 @@ export function VideoCanvas() {
 
           <div className="video-meta-stack">
             <h1 className="video-page-title">{selectedVideo.title}</h1>
-            <p className="video-page-subtitle">{selectedVideo.author} • {selectedVideo.description}</p>
+            <p className="video-page-subtitle">
+              {selectedVideo.author ? `${selectedVideo.author} • ` : ''}{selectedVideo.description}
+            </p>
+            {selectedVideo.descriptionLine2 && (
+              <p className="video-page-subtitle video-page-subtitle-secondary">{selectedVideo.descriptionLine2}</p>
+            )}
             <p className="video-trademark-note">Independent data video layout. No affiliation with YouTube or other video platforms.</p>
           </div>
         </section>
