@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Clapperboard, Film, MoreVertical, MessageSquare, Send } from 'lucide-react';
+import { ArrowLeft, Clapperboard, Film, MoreVertical, MessageSquare } from 'lucide-react';
 import { InteractiveVisualization } from '../components/InteractiveVisualization';
 import { WorldMapVisualization } from '../components/WorldMapVisualization';
 import { CategoryStreamgraph } from '../components/CategoryStreamgraph';
+import { FingerprintDuel } from '../features/fingerprint-duel/FingerprintDuel';
 
 const MOCK_VIDEO_STORIES = [
   {
@@ -21,6 +22,15 @@ const MOCK_VIDEO_STORIES = [
     author: 'Team Gatech',
     description: 'From tokenization to model serving, this video unpacks the design decisions.',
     defaultVideo: 'https://assets.mixkit.co/videos/preview/mixkit-abstract-video-of-a-liquid-texture-evolving-and-changing-32490-large.mp4',
+  },
+  {
+    id: 10,
+    title: 'Attention Fingerprint Duel',
+    author: 'Team Gatech',
+    description: 'Pick any two countries and compare their 13-axis YouTube category attention fingerprint.',
+    descriptionLine2: 'The Lottie gauge scores cosine similarity — same cluster doesn\'t always mean same shape.',
+    defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    visualization: 'fingerprint',
   },
   {
     id: 3,
@@ -50,7 +60,9 @@ export function VideoCanvas() {
     return matched ?? MOCK_VIDEO_STORIES[0];
   }, [parsedId]);
 
-  const [contentMode, setContentMode] = useState(selectedVideo.visualization === 'worldmap' ? 'visual' : 'video');
+  const [contentMode, setContentMode] = useState(
+    ['worldmap', 'streamgraph', 'fingerprint'].includes(selectedVideo.visualization) ? 'visual' : 'video'
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const videoUrl = selectedVideo.defaultVideo;
 
@@ -117,6 +129,10 @@ export function VideoCanvas() {
             ) : selectedVideo.visualization === 'streamgraph' ? (
               <div className="video-visualization-stage">
                 <CategoryStreamgraph />
+              </div>
+            ) : selectedVideo.visualization === 'fingerprint' ? (
+              <div className="video-visualization-stage">
+                <FingerprintDuel />
               </div>
             ) : (
               <div className="video-visualization-stage">

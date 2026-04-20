@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ShortPreview } from '../components/ShortsVisualizations';
 import { CATEGORY_STREAM } from '../data/mlResults';
+import { FingerprintDuelPreview } from '../features/fingerprint-duel/FingerprintDuel';
 
 const MOCK_SHORTS = [
   { id: 1, title: 'Attention is Concentrating', views: '1.2M views', kind: 'convergence' },
@@ -22,6 +23,7 @@ const MOCK_VIDEOS = [
   { id: 6, title: 'The architecture behind our scalable frontend', subtitle: 'React + Vite + D3 pipeline', views: '45K views', time: '5 days ago' },
   { id: 7, title: 'Category Composition Over Time', subtitle: 'Streamgraph — Entertainment rises, Sports dips Q4', views: '28K views', time: '3 days ago', kind: 'streamgraph' },
   { id: 8, title: 'BERTopic Sub-topic Rank Mobility', subtitle: 'Bump chart — who rose, who fell across 5 categories', views: '19K views', time: '1 day ago', kind: 'subtopics' },
+  { id: 10, title: 'Attention Fingerprint Duel', subtitle: 'Compare any two countries across 13 category axes', views: '19K views', time: '1 day ago', kind: 'fingerprint' },
 ];
 
 const ARCHETYPE_COLORS = ['#ff6b6b', '#ffe66d', '#4ecdc4', '#a06cd5', '#ff9f43', '#54a0ff'];
@@ -184,9 +186,12 @@ export function Home({ likedOnly = false, videosOnly = false }) {
           <div className="video-grid">
             {MOCK_VIDEOS.map((video) => (
               <div key={video.id} className="video-card" onClick={() => navigate(`/video/${video.id}`)}>
-                <div className="video-thumbnail-container" style={{ background: (video.kind === 'worldmap' || video.kind === 'streamgraph') ? 'transparent' : `hsl(${video.id * 40 + 100}, 50%, 30%)` }}>
-                  {video.kind === 'worldmap' ? <WorldMapPreview /> : video.kind === 'streamgraph' ? <StreamgraphPreview /> : video.kind === 'subtopics' ? <SubtopicsPreview /> : null}
-                  <div className="video-badge">{['worldmap','streamgraph','subtopics'].includes(video.kind) ? 'Interactive' : 'Data Story'}</div>
+                <div className="video-thumbnail-container" style={{ background: ['worldmap','streamgraph','subtopics','fingerprint'].includes(video.kind) ? 'transparent' : `hsl(${video.id * 40 + 100}, 50%, 30%)` }}>
+                  {video.kind === 'worldmap' && <WorldMapPreview />}
+                  {video.kind === 'streamgraph' && <StreamgraphPreview />}
+                  {video.kind === 'subtopics' && <SubtopicsPreview />}
+                  {video.kind === 'fingerprint' && <FingerprintDuelPreview />}
+                  <div className="video-badge">{['worldmap','streamgraph','subtopics','fingerprint'].includes(video.kind) ? 'Interactive' : 'Data Story'}</div>
                 </div>
                 <div className="video-info">
                   <div className="video-author-avatar"></div>
