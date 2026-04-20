@@ -18,11 +18,6 @@ const MOCK_SHORTS = [
 
 const MOCK_VIDEOS = [
   { id: 1, title: 'Decoding YouTube\u2019s Grip on Global Attention', subtitle: 'DBSCAN Country Archetypes \u2014 104 countries, 6 clusters', views: '50K views', time: '2 days ago', kind: 'worldmap' },
-  { id: 2, title: 'How we engineered our NLP pipeline for Assignment 1', subtitle: 'BERTopic + embeddings walkthrough', views: '12K views', time: '1 week ago' },
-  { id: 3, title: 'Visualizing 1 Million records with Dask and D3', subtitle: 'Performance-first rendering strategy', views: '100K views', time: '3 weeks ago' },
-  { id: 4, title: 'Reviewing our machine learning models', subtitle: 'Clustering, survival analysis, topic modeling', views: '34K views', time: '1 month ago' },
-  { id: 5, title: 'Interactive Dashboard Demo - Final Project', subtitle: 'End-to-end integrated view', views: '10K views', time: '1 day ago' },
-  { id: 6, title: 'The architecture behind our scalable frontend', subtitle: 'React + Vite + D3 pipeline', views: '45K views', time: '5 days ago' },
   { id: 7, title: 'Category Composition Over Time', subtitle: 'Streamgraph — Entertainment rises, Sports dips Q4', views: '28K views', time: '3 days ago', kind: 'streamgraph' },
   { id: 8, title: 'BERTopic Sub-topic Rank Mobility', subtitle: 'Bump chart — who rose, who fell across 5 categories', views: '19K views', time: '1 day ago', kind: 'subtopics' },
   { id: 10, title: 'Attention Fingerprint Duel', subtitle: 'Compare any two countries across 13 category axes', views: '19K views', time: '1 day ago', kind: 'fingerprint' },
