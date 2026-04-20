@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Clapperboard, Upload, LayoutTemplate, Film } from 'lucide-react';
+import { ArrowLeft, Clapperboard, Film, MoreVertical, MessageSquare, Send } from 'lucide-react';
 import { InteractiveVisualization } from '../components/InteractiveVisualization';
 import { WorldMapVisualization } from '../components/WorldMapVisualization';
 
@@ -41,18 +41,8 @@ export function VideoCanvas() {
   }, [parsedId]);
 
   const [contentMode, setContentMode] = useState(selectedVideo.visualization === 'worldmap' ? 'visual' : 'video');
-  const [videoUrl, setVideoUrl] = useState(selectedVideo.defaultVideo);
-
-  const onFileUpload = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(file);
-    setVideoUrl(objectUrl);
-    setContentMode('video');
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
+  const videoUrl = selectedVideo.defaultVideo;
 
   return (
     <div className="video-page-shell">
@@ -62,7 +52,50 @@ export function VideoCanvas() {
 
       <div className="video-main-layout">
         <section className="video-player-column">
-          <div className="video-player-frame">
+          <div className="video-player-frame" style={{ position: 'relative' }}>
+            <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 50 }}>
+              <button 
+                className="icon-btn" 
+                style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                <MoreVertical size={20} color="#fff" />
+              </button>
+              {menuOpen && (
+                <div style={{ 
+                  position: 'absolute', 
+                  top: '100%', 
+                  right: 0, 
+                  marginTop: '8px',
+                  background: 'rgba(15, 15, 15, 0.95)',
+                  border: '1px solid var(--divider)',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                  minWidth: '160px',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', padding: '4px 8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Playback Mode</div>
+                  <button
+                    className={`video-mode-btn ${contentMode === 'video' ? 'active' : ''}`}
+                    onClick={() => { setContentMode('video'); setMenuOpen(false); }}
+                    style={{ justifyContent: 'flex-start' }}
+                  >
+                    <Film size={16} /> Video
+                  </button>
+                  <button
+                    className={`video-mode-btn ${contentMode === 'visual' ? 'active' : ''}`}
+                    onClick={() => { setContentMode('visual'); setMenuOpen(false); }}
+                    style={{ justifyContent: 'flex-start' }}
+                  >
+                    <Clapperboard size={16} /> Visualization
+                  </button>
+                </div>
+              )}
+            </div>
+
             {contentMode === 'video' ? (
               <video controls className="video-player-element" src={videoUrl}>
                 Your browser does not support embedded video playback.
@@ -87,54 +120,59 @@ export function VideoCanvas() {
               <p className="video-page-subtitle video-page-subtitle-secondary">{selectedVideo.descriptionLine2}</p>
             )}
             <p className="video-trademark-note">Independent data video layout. No affiliation with YouTube or other video platforms.</p>
-          </div>
-        </section>
+            
+            <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--divider)' }}>
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <MessageSquare size={20} /> Comments
+              </h3>
+              
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+                <div className="video-author-avatar" style={{ backgroundColor: '#00bcd4' }}></div>
+                <div style={{ flex: 1, position: 'relative' }}>
+                  <input 
+                    type="text" 
+                    placeholder="Add a comment..." 
+                    style={{ 
+                      width: '100%', 
+                      background: 'transparent', 
+                      border: 'none', 
+                      borderBottom: '1px solid var(--divider)', 
+                      padding: '8px 0', 
+                      color: 'var(--text-primary)',
+                      outline: 'none',
+                      fontSize: '0.9rem'
+                    }} 
+                  />
+                </div>
+              </div>
 
-        <aside className="video-tools-column">
-          <div className="video-tool-card">
-            <div className="video-tool-title"><LayoutTemplate size={16} /> Playback Mode</div>
-            <div className="video-toggle-row">
-              <button
-                className={`video-mode-btn ${contentMode === 'video' ? 'active' : ''}`}
-                onClick={() => setContentMode('video')}
-              >
-                <Film size={16} /> Video
-              </button>
-              <button
-                className={`video-mode-btn ${contentMode === 'visual' ? 'active' : ''}`}
-                onClick={() => setContentMode('visual')}
-              >
-                <Clapperboard size={16} /> Visualization
-              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {/* Mock Comment 1 */}
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <div className="video-author-avatar" style={{ width: '32px', height: '32px', backgroundColor: '#e91e63' }}></div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <span style={{ fontWeight: '500', fontSize: '0.85rem' }}>@datanerd</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>2 days ago</span>
+                    </div>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>This visualization really helps understand the clustering over time. Impressive work!</p>
+                  </div>
+                </div>
+                {/* Mock Comment 2 */}
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <div className="video-author-avatar" style={{ width: '32px', height: '32px', backgroundColor: '#4caf50' }}></div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <span style={{ fontWeight: '500', fontSize: '0.85rem' }}>@visfanatic</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>1 week ago</span>
+                    </div>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>Could you make the tooltip more responsive? It lags slightly on mobile.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="video-tool-card">
-            <label htmlFor="video-url" className="video-tool-title"><Film size={16} /> Custom Video URL</label>
-            <input
-              id="video-url"
-              type="url"
-              className="video-url-input"
-              placeholder="https://..."
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-            />
-          </div>
-
-          <div className="video-tool-card">
-            <label className="video-upload-btn" htmlFor="video-file">
-              <Upload size={16} /> Upload local video
-            </label>
-            <input
-              id="video-file"
-              type="file"
-              accept="video/*"
-              onChange={onFileUpload}
-              style={{ display: 'none' }}
-            />
-            <p className="video-upload-note">Upload a local file to quickly test the player.</p>
-          </div>
-        </aside>
+        </section>
       </div>
     </div>
   );

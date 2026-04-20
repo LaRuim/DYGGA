@@ -435,13 +435,15 @@
   background: radial-gradient(circle at top left, #131722, #0a0b10 55%);
   padding: 24px;
   position: relative;
+  flex: 1;
 }
 
 .video-main-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  max-width: 1400px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
 }
 

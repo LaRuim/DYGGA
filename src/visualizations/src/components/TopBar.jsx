@@ -1,4 +1,5 @@
 import { Search, Menu, Bell, Video, User, BarChart2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function TopBar() {
   return (
@@ -24,9 +25,9 @@ export function TopBar() {
       </div>
 
       <div className="topbar-right">
-        <button className="icon-btn">
+        <Link to="/sandbox" className="icon-btn">
           <Video size={24} />
-        </button>
+        </Link>
         <button className="icon-btn">
           <Bell size={24} />
         </button>

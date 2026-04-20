@@ -4,6 +4,7 @@ import { Sidebar } from './components/Sidebar';
 import { Home } from './pages/Home';
 import { ShortsCanvas } from './pages/ShortsCanvas';
 import { VideoCanvas } from './pages/VideoCanvas';
+import { Sandbox } from './pages/Sandbox';
 import './App.css';
 
 function AppContent() {
@@ -30,6 +31,7 @@ function AppContent() {
           <Route path="/liked" element={<Home likedOnly={true} />} />
           <Route path="/videos" element={<Home videosOnly={true} />} />
           <Route path="/video/:id" element={<VideoCanvas />} />
+          <Route path="/sandbox" element={<Sandbox />} />
         </Routes>
       </div>
     </div>
