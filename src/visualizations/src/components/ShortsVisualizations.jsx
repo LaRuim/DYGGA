@@ -484,6 +484,258 @@ export function ChurnShort() {
 }
 
 // ============================================================
+// 6. World Sync — cosine similarity gauge, 2022 → 2025
+// ============================================================
+export function WorldSyncShort() {
+  const [year, setYear] = useState(2025);
+  const [playing, setPlaying] = useState(false);
+
+  const data = CONVERGENCE.similarity_by_year;
+  const years = data.map(d => d.year);
+  const yearColors = ['#8fb8ff', '#54a0ff', '#ff9f43', '#ff6b6b'];
+
+  useEffect(() => {
+    if (!playing) return;
+    const tick = setInterval(() => {
+      setYear(y => {
+        const idx = years.indexOf(y);
+        if (idx >= years.length - 1) { setPlaying(false); return y; }
+        return years[idx + 1];
+      });
+    }, 1200);
+    return () => clearInterval(tick);
+  }, [playing, years]);
+
+  const row = data.find(d => d.year === year);
+  const base = data[0].sim;
+  const delta = row.sim - base;
+
+  const w = 300, h = 190;
+  const gx = w / 2, gy = h / 2;
+  const R = 62;
+
+  // angleDeg: degrees clockwise from 12 o'clock
+  const toXY = (angleDeg, r) => {
+    const a = (angleDeg - 90) * Math.PI / 180;
+    return [gx + r * Math.cos(a), gy + r * Math.sin(a)];
+  };
+
+  // Gauge opens at the bottom: 225° (lower-left) → 135° (lower-right), clockwise 270°
+  const TRACK_START = 225, TRACK_END = 135;
+  const ARC_LEN = R * (270 * Math.PI / 180); // ≈ 292
+
+  const arcPath = (r, startDeg, endDeg) => {
+    const [sx, sy] = toXY(startDeg, r);
+    const [ex, ey] = toXY(endDeg, r);
+    const sweep = (endDeg - startDeg + 360) % 360;
+    return `M ${sx.toFixed(2)} ${sy.toFixed(2)} A ${r} ${r} 0 ${sweep > 180 ? 1 : 0} 1 ${ex.toFixed(2)} ${ey.toFixed(2)}`;
+  };
+
+  const simMin = 0.848, simMax = 0.869;
+  const progress = Math.max(0.01, Math.min(1, (row.sim - simMin) / (simMax - simMin)));
+
+  const interpretation = delta > 0.015 ? 'Strong convergence' : delta > 0.004 ? 'Converging' : delta > 0 ? 'Slight sync' : 'Mild divergence';
+
+  return (
+    <ShortShell
+      eyebrow="COSINE SIMILARITY · 2022 → 2025"
+      title="The world is syncing"
+      accent="#54a0ff"
+      footer={
+        <div className="short-stat-row">
+          <div className="short-stat">
+            <div className="short-stat-label"><Activity size={12} /> Global similarity</div>
+            <div className="short-stat-val">{(row.sim * 100).toFixed(2)}<span className="short-stat-unit">%</span></div>
+            <div className="short-stat-delta" style={{ color: delta >= 0 ? '#ff8a8a' : '#4ecdc4' }}>
+              {delta >= 0 ? '+' : ''}{(delta * 100).toFixed(2)} pp vs 2022
+            </div>
+          </div>
+          <div className="short-stat">
+            <div className="short-stat-label"><TrendingUp size={12} /> Signal</div>
+            <div className="short-stat-val" style={{ fontSize: '0.85rem' }}>{interpretation}</div>
+            <div className="short-stat-delta" style={{ color: '#aaa' }}>104 countries</div>
+          </div>
+        </div>
+      }
+    >
+      <svg viewBox={`0 0 ${w} ${h}`} className="short-svg">
+        {/* Ambient pulse rings */}
+        {[0, 1, 2].map(i => (
+          <circle key={i} cx={gx} cy={gy} r={R * (0.3 + i * 0.2)}
+            fill="none" stroke="#54a0ff" strokeWidth="0.8"
+            className={`sync-pulse sync-pulse-${i}`}
+          />
+        ))}
+
+        {/* Track arc (dim) */}
+        <path d={arcPath(R, TRACK_START, TRACK_END)}
+          fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="7" strokeLinecap="round" />
+
+        {/* Filled arc — stroke-dashoffset drives the fill animation */}
+        <path d={arcPath(R, TRACK_START, TRACK_END)}
+          fill="none" stroke="#54a0ff" strokeWidth="7" strokeLinecap="round"
+          strokeDasharray={ARC_LEN}
+          strokeDashoffset={ARC_LEN * (1 - progress)}
+          style={{ transition: 'stroke-dashoffset 0.7s cubic-bezier(0.2,0.8,0.2,1)' }}
+        />
+
+        {/* Cluster color dots evenly around the gauge arc */}
+        {[0, 1, 2, 3, 4, 5].map(i => {
+          const angle = TRACK_START + (i / 5) * 270;
+          const [dx, dy] = toXY(angle, R + 16);
+          return <circle key={i} cx={dx} cy={dy} r={3.5} fill={CLUSTERS[i].color} opacity={0.85} />;
+        })}
+
+        {/* Centre value */}
+        <text x={gx} y={gy - 8} textAnchor="middle" fontSize="26" fontWeight="bold" fill="#fff">
+          {(row.sim * 100).toFixed(2)}%
+        </text>
+        <text x={gx} y={gy + 10} textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.45)">
+          cosine similarity
+        </text>
+        <text x={gx} y={gy + 22} textAnchor="middle" fontSize="7.5" fill="rgba(255,255,255,0.28)">
+          trending-list overlap across 104 countries
+        </text>
+      </svg>
+
+      <div className="short-year-row">
+        {data.map((d, i) => (
+          <button key={d.year}
+            className={`short-year-pill ${d.year === year ? 'active' : ''}`}
+            onClick={() => { setYear(d.year); setPlaying(false); }}
+            style={{ borderColor: d.year === year ? yearColors[i] : 'transparent', color: d.year === year ? yearColors[i] : undefined }}
+          >
+            {d.year}
+          </button>
+        ))}
+      </div>
+    </ShortShell>
+  );
+}
+
+// ============================================================
+// 7. Cluster Scatter — TTT vs Duration bubble chart
+// ============================================================
+const SCATTER_IDS = [0, 1, 2, 3, 4, 5];
+
+export function ClusterScatterShort() {
+  const [selected, setSelected] = useState(2); // Western Anglosphere is the standout outlier
+
+  const w = 300, h = 180;
+  const pad = { l: 38, r: 14, t: 14, b: 32 };
+
+  const points = SCATTER_IDS.map((i) => ({ id: i, ...CLUSTERS[i] }));
+
+  const tttVals = points.map((p) => p.profile.mean_ttt);
+  const durVals = points.map((p) => p.profile.mean_duration);
+  const viewVals = points.map((p) => p.profile.mean_views);
+
+  const tttMin = Math.min(...tttVals), tttMax = Math.max(...tttVals);
+  const durMin = Math.min(...durVals), durMax = Math.max(...durVals);
+  const viewMin = Math.min(...viewVals), viewMax = Math.max(...viewVals);
+
+  const cx = (ttt) => pad.l + ((ttt - tttMin) / (tttMax - tttMin)) * (w - pad.l - pad.r);
+  const cy = (dur) => pad.t + (1 - (dur - durMin) / (durMax - durMin)) * (h - pad.t - pad.b);
+  const r  = (views) => 6 + ((views - viewMin) / (viewMax - viewMin)) * 10;
+
+  const sel = CLUSTERS[selected];
+
+  // Axis tick values
+  const tttTicks = [20, 40, 60];
+  const durTicks = [150, 250, 350];
+
+  return (
+    <ShortShell
+      eyebrow="DBSCAN · TTT vs DURATION"
+      title="Where do archetypes sit?"
+      accent="#a06cd5"
+      footer={
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: sel.color, display: 'inline-block', flexShrink: 0 }} />
+            <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '0.85rem' }}>{sel.label}</span>
+          </div>
+          <div style={{ display: 'flex', gap: '16px' }}>
+            <div className="short-stat" style={{ flex: 1 }}>
+              <div className="short-stat-label"><Clock size={11} /> Time-to-trend</div>
+              <div className="short-stat-val" style={{ fontSize: '1rem' }}>{sel.profile.mean_ttt.toFixed(1)} <span className="short-stat-unit">hrs</span></div>
+            </div>
+            <div className="short-stat" style={{ flex: 1 }}>
+              <div className="short-stat-label"><Activity size={11} /> Duration</div>
+              <div className="short-stat-val" style={{ fontSize: '1rem' }}>{sel.profile.mean_duration.toFixed(0)} <span className="short-stat-unit">hrs</span></div>
+            </div>
+            <div className="short-stat" style={{ flex: 1 }}>
+              <div className="short-stat-label"><Layers size={11} /> Avg views</div>
+              <div className="short-stat-val" style={{ fontSize: '1rem' }}>{(sel.profile.mean_views / 1e6).toFixed(2)}<span className="short-stat-unit">M</span></div>
+            </div>
+          </div>
+          <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', marginTop: '2px' }}>
+            "{sel.distinguishing}"
+          </div>
+        </div>
+      }
+    >
+      <svg viewBox={`0 0 ${w} ${h}`} className="short-svg" style={{ overflow: 'visible' }}>
+        {/* Grid lines */}
+        {tttTicks.map((t) => (
+          <line key={t} x1={cx(t)} x2={cx(t)} y1={pad.t} y2={h - pad.b}
+            stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+        ))}
+        {durTicks.map((d) => (
+          <line key={d} x1={pad.l} x2={w - pad.r} y1={cy(d)} y2={cy(d)}
+            stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+        ))}
+
+        {/* Axis labels */}
+        {tttTicks.map((t) => (
+          <text key={t} x={cx(t)} y={h - pad.b + 10} fontSize="8" fill="rgba(255,255,255,0.4)" textAnchor="middle">{t}h</text>
+        ))}
+        {durTicks.map((d) => (
+          <text key={d} x={pad.l - 4} y={cy(d) + 3} fontSize="8" fill="rgba(255,255,255,0.4)" textAnchor="end">{d}h</text>
+        ))}
+
+        {/* Axis titles */}
+        <text x={w / 2} y={h - 2} fontSize="8" fill="rgba(255,255,255,0.4)" textAnchor="middle">Time-to-trend →</text>
+        <text x={6} y={h / 2} fontSize="8" fill="rgba(255,255,255,0.4)" textAnchor="middle"
+          transform={`rotate(-90, 6, ${h / 2})`}>Duration →</text>
+
+        {/* Bubbles — render selected last so it sits on top */}
+        {[...points.filter((p) => p.id !== selected), ...points.filter((p) => p.id === selected)].map((p) => {
+          const isSelected = p.id === selected;
+          const bx = cx(p.profile.mean_ttt);
+          const by = cy(p.profile.mean_duration);
+          const br = r(p.profile.mean_views);
+          return (
+            <g key={p.id} style={{ cursor: 'pointer' }} onClick={() => setSelected(p.id)}>
+              {isSelected && (
+                <circle cx={bx} cy={by} r={br + 5} fill="none"
+                  stroke={p.color} strokeWidth="1.5" opacity="0.5" strokeDasharray="3 2" />
+              )}
+              <circle cx={bx} cy={by} r={br}
+                fill={p.color} opacity={isSelected ? 1 : 0.45}
+                style={{ transition: 'r 0.2s, opacity 0.2s' }}
+              />
+              {isSelected && (
+                <text x={bx} y={by - br - 4} fontSize="8" fill={p.color} textAnchor="middle" fontWeight="bold">
+                  {p.label.split(' ')[0]}
+                </text>
+              )}
+            </g>
+          );
+        })}
+
+        {/* Bubble size legend */}
+        <g>
+          <circle cx={w - pad.r - 18} cy={pad.t + 8} r={6} fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
+          <circle cx={w - pad.r - 4}  cy={pad.t + 14} r={11} fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
+          <text x={w - pad.r - 30} y={pad.t + 26} fontSize="7" fill="rgba(255,255,255,0.35)" textAnchor="middle">= views</text>
+        </g>
+      </svg>
+    </ShortShell>
+  );
+}
+
+// ============================================================
 // Preview thumbnails for the Home page shorts shelf
 // ============================================================
 export function ShortPreview({ kind }) {
@@ -559,6 +811,55 @@ export function ShortPreview({ kind }) {
           <polyline points={xPts} stroke="#ff8a8a" strokeWidth="1.5" fill="none" opacity={0.9} strokeDasharray="3 2" />
         </svg>
         <div className="short-preview-badge">TREND CHURN</div>
+      </div>
+    );
+  }
+  if (kind === 'world-sync') {
+    const gx = 50, gy = 32, R = 22;
+    const toXY = (deg, r) => {
+      const a = (deg - 90) * Math.PI / 180;
+      return [gx + r * Math.cos(a), gy + r * Math.sin(a)];
+    };
+    const arcPath = (r, s, e) => {
+      const [sx, sy] = toXY(s, r);
+      const [ex, ey] = toXY(e, r);
+      const sw = (e - s + 360) % 360;
+      return `M ${sx.toFixed(1)} ${sy.toFixed(1)} A ${r} ${r} 0 ${sw > 180 ? 1 : 0} 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+    };
+    const ARC_LEN = R * (270 * Math.PI / 180);
+    const progress = (0.8669 - 0.848) / (0.869 - 0.848); // peak year (2024)
+    return (
+      <div className="short-preview" style={{ background: 'radial-gradient(circle at 50% 40%, #0a1a3a, #05070d)' }}>
+        <svg viewBox="0 0 100 60" className="short-preview-svg">
+          <path d={arcPath(R, 225, 135)} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="3" strokeLinecap="round" />
+          <path d={arcPath(R, 225, 135)} fill="none" stroke="#54a0ff" strokeWidth="3" strokeLinecap="round"
+            strokeDasharray={ARC_LEN} strokeDashoffset={ARC_LEN * (1 - progress)} />
+          {[0,1,2].map(i => <circle key={i} cx={gx} cy={gy} r={R*(0.3+i*0.2)} fill="none" stroke="#54a0ff" strokeWidth="0.4" opacity={0.15-i*0.04} />)}
+          <text x={gx} y={gy+4} textAnchor="middle" fontSize="7" fontWeight="bold" fill="#fff">86.69%</text>
+          <text x={50} y={54} textAnchor="middle" fontSize="5" fill="rgba(255,255,255,0.4)">peak 2024</text>
+        </svg>
+        <div className="short-preview-badge">GLOBAL SYNC</div>
+      </div>
+    );
+  }
+  if (kind === 'cluster-scatter') {
+    const ids = [0, 1, 2, 3, 4, 5];
+    const tttMin = 16.6, tttMax = 71.8, durMin = 147.8, durMax = 380.2;
+    const cx = (ttt) => 8 + ((ttt - tttMin) / (tttMax - tttMin)) * 84;
+    const cy = (dur) => 55 - ((dur - durMin) / (durMax - durMin)) * 48;
+    return (
+      <div className="short-preview" style={{ background: 'radial-gradient(circle at 30% 70%, #1a0f2a, #05070d)' }}>
+        <svg viewBox="0 0 100 60" className="short-preview-svg">
+          {ids.map((i) => (
+            <circle key={i}
+              cx={cx(CLUSTERS[i].profile.mean_ttt)}
+              cy={cy(CLUSTERS[i].profile.mean_duration)}
+              r={3 + (CLUSTERS[i].profile.mean_views / 4361375) * 5}
+              fill={CLUSTERS[i].color} opacity="0.85"
+            />
+          ))}
+        </svg>
+        <div className="short-preview-badge">CLUSTER MAP</div>
       </div>
     );
   }

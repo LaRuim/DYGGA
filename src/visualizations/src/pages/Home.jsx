@@ -11,8 +11,9 @@ const MOCK_SHORTS = [
   { id: 2, title: 'Videos Linger Longer', views: '800K views', kind: 'survival' },
   { id: 3, title: 'BERTopic Noise Reduction', views: '420K views', kind: 'bertopic' },
   { id: 4, title: 'DBSCAN Archetype Profiles', views: '2M views', kind: 'archetype' },
-  { id: 5, title: 'Time Series Peaks', views: '3M views' },
   { id: 8, title: 'Monthly Trend Churn', views: '670K views', kind: 'churn' },
+  { id: 10, title: 'The World is Syncing', views: '540K views', kind: 'world-sync' },
+  { id: 9, title: 'Six Archetypes, One Map', views: '910K views', kind: 'cluster-scatter' },
 ];
 
 const MOCK_VIDEOS = [
