@@ -16,6 +16,11 @@ const MOCK_VIDEO_STORIES = [
     descriptionLine2: 'Click any country to see per-country metrics, prototypicality score, and top category mix.',
     defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
     visualization: 'worldmap',
+    comments: [
+      { user: '@atlas_anand',  color: '#e91e63', time: '2 days ago',  text: 'The Gulf/ME cluster popping out in warm red makes the engagement-depth story immediate. Great colour choice.' },
+      { user: '@region_rohan', color: '#4caf50', time: '1 day ago',   text: 'Interesting that Japan and South Korea end up as noise — would\u2019ve bet money they\u2019d anchor their own cluster.' },
+      { user: '@country_coder',color: '#9c27b0', time: '5 days ago',  text: 'Click-through to per-country top categories + prototypicality is gold. This is basically a country explainer by itself.' },
+    ],
   },
   {
     id: 2,
@@ -23,6 +28,11 @@ const MOCK_VIDEO_STORIES = [
     author: 'Team Gatech',
     description: 'From tokenization to model serving, this video unpacks the design decisions.',
     defaultVideo: 'https://assets.mixkit.co/videos/preview/mixkit-abstract-video-of-a-liquid-texture-evolving-and-changing-32490-large.mp4',
+    comments: [
+      { user: '@tokenizer_tara', color: '#ff9800', time: '3 days ago', text: 'Batching at 256 on MPS for 726k rows in an hour is wild — did you quantize at all or stay fp32?' },
+      { user: '@embed_evan',     color: '#2196f3', time: '6 days ago', text: 'Using the multilingual MiniLM was the right call given the 104-country spread. English-only would\u2019ve ghettoed the non-English clusters.' },
+      { user: '@pipeline_pete',  color: '#00bcd4', time: '1 week ago', text: 'The per-category BERTopic pivot is underrated. Saved you from language-as-topic collapse.' },
+    ],
   },
   {
     id: 10,
@@ -32,6 +42,11 @@ const MOCK_VIDEO_STORIES = [
     descriptionLine2: 'The Lottie gauge scores cosine similarity — same cluster doesn\'t always mean same shape.',
     defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
     visualization: 'fingerprint',
+    comments: [
+      { user: '@fingerprint_fi', color: '#ff4081', time: '1 day ago',  text: 'Tried US vs GB expecting 0.99 — got 0.92. Comedy weight is way different than I assumed.' },
+      { user: '@cosine_cleo',    color: '#8bc34a', time: '2 days ago', text: 'Love that the Lottie gauge animates the score. Makes a dry cosine number feel like a verdict.' },
+      { user: '@duel_dan',       color: '#673ab7', time: '4 days ago', text: 'Would be cool to persist a "duel history" so you can walk back through comparisons you already ran.' },
+    ],
   },
   {
     id: 11,
@@ -41,6 +56,11 @@ const MOCK_VIDEO_STORIES = [
     descriptionLine2: 'Hover any dot for country details. Click a cluster in the legend to isolate it. Dashed lines mark the median TTT and duration.',
     defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
     visualization: 'tttscatter',
+    comments: [
+      { user: '@scatter_sam',   color: '#f44336', time: '2 days ago', text: 'The bottom-left Anglosphere cluster is so isolated it almost looks like a labeling bug. But no — they really cycle that fast.' },
+      { user: '@median_maya',   color: '#03a9f4', time: '3 days ago', text: 'The median crosshairs are a nice touch. Lets you eyeball which quadrant each cluster dominates.' },
+      { user: '@outlier_oscar', color: '#ffc107', time: '1 week ago', text: 'Japan sitting way off to the right-top drags the noise cluster — would be worth a callout annotation.' },
+    ],
   },
   {
     id: 3,
@@ -48,6 +68,11 @@ const MOCK_VIDEO_STORIES = [
     author: 'Team Gatech',
     description: 'Performance-friendly rendering strategy for high-volume visual analytics.',
     defaultVideo: 'https://www.w3schools.com/html/movie.mp4',
+    comments: [
+      { user: '@dask_dora',    color: '#009688', time: '4 days ago', text: 'Streaming partitions was the fix for us too — in-memory pandas choked on the trending CSVs\u2019 multi-line descriptions.' },
+      { user: '@render_ricky', color: '#ff5722', time: '6 days ago', text: 'Canvas over SVG at this row count is non-negotiable. Curious how you handle hover hit-testing though.' },
+      { user: '@perf_phil',    color: '#795548', time: '2 weeks ago',text: 'The cached aggregated tags tip is what took this from "technically works" to "interactive". More people need to steal that.' },
+    ],
   },
   {
     id: 7,
@@ -57,6 +82,11 @@ const MOCK_VIDEO_STORIES = [
     descriptionLine2: 'Entertainment\'s share grows from 27.8% → 29.4% as Sports retreats. Hover any band or the legend to isolate a category.',
     defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
     visualization: 'streamgraph',
+    comments: [
+      { user: '@stream_sita',      color: '#e040fb', time: '3 days ago', text: 'Sports losing ground Q4 every year reads like the World Cup / Super Bowl cycle bleeding into Entertainment. Seasonality you can feel.' },
+      { user: '@composition_carl', color: '#00e676', time: '5 days ago', text: '1.6pp shift for Entertainment in 3 years is huge on a platform this saturated. The streamgraph framing sells it well.' },
+      { user: '@share_saanvi',     color: '#7c4dff', time: '1 day ago',  text: 'Hovering a band to isolate is exactly the interaction I wanted. Most streamgraphs just sit there.' },
+    ],
   },
 ];
 
@@ -191,28 +221,18 @@ export function VideoCanvas() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {/* Mock Comment 1 */}
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <div className="video-author-avatar" style={{ width: '32px', height: '32px', backgroundColor: '#e91e63' }}></div>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <span style={{ fontWeight: '500', fontSize: '0.85rem' }}>@datanerd</span>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>2 days ago</span>
+                {(selectedVideo.comments ?? []).map((c) => (
+                  <div key={c.user} style={{ display: 'flex', gap: '12px' }}>
+                    <div className="video-author-avatar" style={{ width: '32px', height: '32px', backgroundColor: c.color }}></div>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                        <span style={{ fontWeight: '500', fontSize: '0.85rem' }}>{c.user}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{c.time}</span>
+                      </div>
+                      <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>{c.text}</p>
                     </div>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>This visualization really helps understand the clustering over time. Impressive work!</p>
                   </div>
-                </div>
-                {/* Mock Comment 2 */}
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <div className="video-author-avatar" style={{ width: '32px', height: '32px', backgroundColor: '#4caf50' }}></div>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <span style={{ fontWeight: '500', fontSize: '0.85rem' }}>@visfanatic</span>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>1 week ago</span>
-                    </div>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0 }}>Could you make the tooltip more responsive? It lags slightly on mobile.</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
