@@ -148,33 +148,42 @@ export const NUMERIC_TO_ISO2 = Object.entries(ISO2_TO_NUMERIC).reduce((acc, [k, 
   acc[v] = k; return acc;
 }, {});
 
-// KM survival curves by top-5 category (medians from notebook cell f45f3412)
-export const KM_BY_CATEGORY = [
-  { cat: 'Entertainment',  color: '#ff8a8a', medianDays: 12.4 },
-  { cat: 'Music',          color: '#ffe66d', medianDays: 11.2 },
-  { cat: 'People & Blogs', color: '#a06cd5', medianDays: 8.8  },
-  { cat: 'Gaming',         color: '#4ecdc4', medianDays: 7.1  },
-  { cat: 'Sports',         color: '#ff9f43', medianDays: 5.3  },
-];
-
-// Median trending duration by region — top 15 countries by video count (notebook cell bf9112a8)
-export const REGION_SURVIVAL = [
-  { region: 'SA', name: 'Saudi Arabia',   medianDays: 15.2 },
-  { region: 'EG', name: 'Egypt',          medianDays: 14.8 },
-  { region: 'MX', name: 'Mexico',         medianDays: 13.1 },
-  { region: 'IN', name: 'India',          medianDays: 12.5 },
-  { region: 'RU', name: 'Russia',         medianDays: 11.2 },
-  { region: 'TR', name: 'Türkiye',        medianDays: 10.8 },
-  { region: 'BR', name: 'Brazil',         medianDays: 10.6 },
-  { region: 'KR', name: 'South Korea',    medianDays: 9.8  },
-  { region: 'JP', name: 'Japan',          medianDays: 9.2  },
-  { region: 'ID', name: 'Indonesia',      medianDays: 8.6  },
-  { region: 'DE', name: 'Germany',        medianDays: 7.4  },
-  { region: 'AU', name: 'Australia',      medianDays: 7.1  },
-  { region: 'FR', name: 'France',         medianDays: 6.9  },
-  { region: 'US', name: 'United States',  medianDays: 6.8  },
-  { region: 'GB', name: 'United Kingdom', medianDays: 6.2  },
-];
+// BERTopic sub-topic rank mobility — top 6 sub-topics per category across 2022-2025
+// rank[i][year] = 1-indexed rank in that category's sub-topic list (null = outside top 10)
+// share[i][year] = % of that category's videos in the sub-topic
+// Source: notebook cell 360180ed (plot_top_subtopics output shown in DVA_Midterm_Report screenshots)
+export const BERTOPIC_SUBTOPICS = {
+  Entertainment: {
+    topics:  ['TV/Episode', 'TV/Serial', 'Movies', 'Turkish TV', 'Serial Drama', 'Rage/Shorts'],
+    colors:  ['#ff8a8a',    '#ffe66d',   '#4ecdc4', '#a06cd5',    '#ff9f43',      '#54a0ff'],
+    ranks:   [[2,1,1,1],[1,2,2,2],[4,4,3,3],[6,7,7,6],[7,5,6,7],[null,10,10,null]],
+    shares:  [[12.1,12.3,15.9,17.8],[15.4,16.3,15.7,15.0],[9.9,9.0,7.8,7.4],[4.6,4.2,4.7,5.6],[4.1,3.9,4.2,3.7],[null,3.2,2.4,null]],
+  },
+  Sports: {
+    topics:  ['Highlights', 'Real Madrid', 'League',  'Maroc/Van', 'Man United', 'Cup Ties'],
+    colors:  ['#ff8a8a',    '#ffe66d',     '#4ecdc4', '#a06cd5',   '#ff9f43',    '#54a0ff'],
+    ranks:   [[1,1,1,1],[2,2,2,2],[3,3,3,3],[7,6,8,7],[9,8,7,9],[null,null,9,9]],
+    shares:  [[8.9,9.7,10.0,9.4],[7.8,7.4,8.3,8.6],[7.3,7.0,6.0,7.0],[3.9,3.8,3.2,3.0],[3.1,3.2,3.2,3.0],[null,null,2.8,2.8]],
+  },
+  Gaming: {
+    topics:  ['MC+FIFA',  'MC+Fortnite', 'GTA+FC',  'Dinosaurios', 'Roblox',  'Free Games'],
+    colors:  ['#ff8a8a',  '#ffe66d',     '#4ecdc4', '#a06cd5',     '#ff9f43', '#54a0ff'],
+    ranks:   [[1,1,1,1],[4,2,2,2],[2,3,3,null],[6,6,9,10],[8,7,5,3],[10,8,7,5]],
+    shares:  [[7.9,7.6,6.7,7.4],[3.4,3.9,4.9,4.7],[4.0,3.7,3.7,null],[2.8,2.8,2.5,2.7],[2.2,2.5,3.0,3.8],[2.1,2.5,2.9,3.3]],
+  },
+  Music: {
+    topics:  ['Song+MV', 'New Songs', 'Video+New', 'Benson Boone', 'Contro Te', 'BIAAS'],
+    colors:  ['#ff8a8a', '#ffe66d',   '#4ecdc4',   '#a06cd5',      '#ff9f43',   '#54a0ff'],
+    ranks:   [[1,1,1,1],[3,2,2,2],[2,3,3,3],[5,5,5,9],[6,4,7,8],[8,8,4,4]],
+    shares:  [[8.9,9.6,10.8,10.5],[4.9,6.3,7.6,7.6],[6.1,6.2,6.8,7.0],[3.7,3.5,2.9,2.5],[3.5,3.5,2.9,2.6],[2.6,2.7,3.3,4.1]],
+  },
+  'P & Blogs': {
+    topics:  ['Shorts+Vlogs', 'Family Vlogs', 'Funny Shorts', 'TikTok Vlogs', 'Global',  'Challenge'],
+    colors:  ['#ff8a8a',      '#ffe66d',      '#4ecdc4',      '#a06cd5',       '#ff9f43', '#54a0ff'],
+    ranks:   [[2,1,1,1],[1,2,2,2],[4,4,4,4],[10,6,5,5],[6,10,10,7],[5,5,6,null]],
+    shares:  [[10.6,11.8,12.9,12.6],[11.3,10.2,9.0,9.2],[6.6,7.3,7.5,8.3],[3.0,3.8,4.5,5.1],[4.8,3.0,2.5,2.7],[5.7,5.5,4.5,null]],
+  },
+};
 
 // Monthly video entries vs exits — Jul 2022 to Jun 2025 (notebook cell 9d1cfb86)
 export const MONTHLY_CHURN = [

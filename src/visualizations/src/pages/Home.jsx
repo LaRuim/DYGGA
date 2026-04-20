@@ -10,8 +10,6 @@ const MOCK_SHORTS = [
   { id: 3, title: 'BERTopic Noise Reduction', views: '420K views', kind: 'bertopic' },
   { id: 4, title: 'DBSCAN Archetype Profiles', views: '2M views', kind: 'archetype' },
   { id: 5, title: 'Time Series Peaks', views: '3M views' },
-  { id: 6, title: 'Content Lifespan by Category', views: '950K views', kind: 'survival-category' },
-  { id: 7, title: 'Which Countries Trend Longest?', views: '1.4M views', kind: 'region-duration' },
   { id: 8, title: 'Monthly Trend Churn', views: '670K views', kind: 'churn' },
 ];
 
@@ -23,6 +21,7 @@ const MOCK_VIDEOS = [
   { id: 5, title: 'Interactive Dashboard Demo - Final Project', subtitle: 'End-to-end integrated view', views: '10K views', time: '1 day ago' },
   { id: 6, title: 'The architecture behind our scalable frontend', subtitle: 'React + Vite + D3 pipeline', views: '45K views', time: '5 days ago' },
   { id: 7, title: 'Category Composition Over Time', subtitle: 'Streamgraph — Entertainment rises, Sports dips Q4', views: '28K views', time: '3 days ago', kind: 'streamgraph' },
+  { id: 8, title: 'BERTopic Sub-topic Rank Mobility', subtitle: 'Bump chart — who rose, who fell across 5 categories', views: '19K views', time: '1 day ago', kind: 'subtopics' },
 ];
 
 const ARCHETYPE_COLORS = ['#ff6b6b', '#ffe66d', '#4ecdc4', '#a06cd5', '#ff9f43', '#54a0ff'];
@@ -51,6 +50,38 @@ function WorldMapPreview() {
         <Globe2 size={26} />
         <div className="video-preview-title">Interactive World Map</div>
         <div className="video-preview-sub">DBSCAN · 6 Archetypes · 104 countries</div>
+      </div>
+    </div>
+  );
+}
+
+function SubtopicsPreview() {
+  const cats = ['Gaming', 'Music', 'Sports'];
+  const colors = [['#ff8a8a','#ffe66d','#4ecdc4','#a06cd5','#ff9f43','#54a0ff'],
+                  ['#ff8a8a','#ffe66d','#4ecdc4','#a06cd5','#ff9f43','#54a0ff'],
+                  ['#ff8a8a','#ffe66d','#4ecdc4','#a06cd5','#ff9f43','#54a0ff']];
+  const sampleRanks = [
+    [[1,1,1,1],[4,2,2,2],[2,3,3,null],[6,6,9,10],[8,7,5,3],[10,8,7,5]],
+    [[1,1,1,1],[3,2,2,2],[2,3,3,3],[5,5,5,9],[6,4,7,8],[8,8,4,4]],
+    [[1,1,1,1],[2,2,2,2],[3,3,3,3],[7,6,8,7],[9,8,7,9],[null,null,9,9]],
+  ];
+  return (
+    <div className="video-preview-worldmap">
+      <svg viewBox="0 0 100 56" preserveAspectRatio="xMidYMid slice" className="video-preview-svg">
+        <rect width="100" height="56" fill="#05070d" />
+        {sampleRanks[0].map((ranks, ti) => {
+          const pts = ranks.map((r, yi) => r !== null ? `${5 + yi * 30},${5 + ((r-1)/9)*44}` : null);
+          const segs = []; let seg = [];
+          pts.forEach((p) => { if (p) seg.push(p); else if (seg.length) { segs.push(seg); seg = []; } });
+          if (seg.length) segs.push(seg);
+          return segs.map((s, si) => (
+            <polyline key={`${ti}-${si}`} points={s.join(' ')} stroke={colors[0][ti]} strokeWidth="1.5" fill="none" opacity="0.85" />
+          ));
+        })}
+      </svg>
+      <div className="video-preview-overlay">
+        <div className="video-preview-title">Sub-topic Rank Mobility</div>
+        <div className="video-preview-sub">BERTopic · 5 categories · rank bump chart</div>
       </div>
     </div>
   );
@@ -154,8 +185,8 @@ export function Home({ likedOnly = false, videosOnly = false }) {
             {MOCK_VIDEOS.map((video) => (
               <div key={video.id} className="video-card" onClick={() => navigate(`/video/${video.id}`)}>
                 <div className="video-thumbnail-container" style={{ background: (video.kind === 'worldmap' || video.kind === 'streamgraph') ? 'transparent' : `hsl(${video.id * 40 + 100}, 50%, 30%)` }}>
-                  {video.kind === 'worldmap' ? <WorldMapPreview /> : video.kind === 'streamgraph' ? <StreamgraphPreview /> : null}
-                  <div className="video-badge">{video.kind === 'worldmap' || video.kind === 'streamgraph' ? 'Interactive' : 'Data Story'}</div>
+                  {video.kind === 'worldmap' ? <WorldMapPreview /> : video.kind === 'streamgraph' ? <StreamgraphPreview /> : video.kind === 'subtopics' ? <SubtopicsPreview /> : null}
+                  <div className="video-badge">{['worldmap','streamgraph','subtopics'].includes(video.kind) ? 'Interactive' : 'Data Story'}</div>
                 </div>
                 <div className="video-info">
                   <div className="video-author-avatar"></div>

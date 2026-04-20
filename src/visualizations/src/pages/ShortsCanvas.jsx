@@ -7,8 +7,6 @@ import {
   SurvivalShort,
   BertopicShort,
   ArchetypeShort,
-  SurvivalByCategoryShort,
-  RegionDurationShort,
   ChurnShort,
 } from '../components/ShortsVisualizations';
 
@@ -71,29 +69,6 @@ const MOCK_SHORTS_DATA = [
     ]
   },
   {
-    id: 6,
-    type: 'interactive',
-    shortKind: 'survival-category',
-    title: 'Content lifespan varies by type',
-    creator: '@dva_graph',
-    desc: 'Kaplan-Meier survival curves broken down by the top 5 YouTube categories. Entertainment and Music linger longest — Sports exits fastest.',
-    comments: [
-      { user: '@data_scientist', text: 'Insight: Sports content has a 5.3-day median vs Entertainment\'s 12.4 days — a 2.3× gap driven by time-sensitivity of live events.', isInsight: true },
-      { user: '@student123', text: 'Makes sense — nobody watches a sports recap a week later but a drama series keeps getting recommended.', isInsight: false },
-    ],
-  },
-  {
-    id: 7,
-    type: 'interactive',
-    shortKind: 'region-duration',
-    title: 'Middle East trends the longest',
-    creator: '@geo_master',
-    desc: 'Top 15 countries ranked by median trending duration. Saudi Arabia leads at 15.2 days; the UK and US barely reach 6 days.',
-    comments: [
-      { user: '@geo_master', text: 'Insight: All top 4 longest-trending countries are in the MENA region — aligns with the Gulf/ME DBSCAN cluster\'s 372 hr mean duration.', isInsight: true },
-    ],
-  },
-  {
     id: 8,
     type: 'interactive',
     shortKind: 'churn',
@@ -113,8 +88,6 @@ function RenderVisualizationPlaceholder({ type, id, shortKind }) {
     if (shortKind === 'survival') return <SurvivalShort />;
     if (shortKind === 'bertopic') return <BertopicShort />;
     if (shortKind === 'archetype') return <ArchetypeShort />;
-    if (shortKind === 'survival-category') return <SurvivalByCategoryShort />;
-    if (shortKind === 'region-duration') return <RegionDurationShort />;
     if (shortKind === 'churn') return <ChurnShort />;
   }
   return <RenderLegacyPlaceholder type={type} id={id} />;
