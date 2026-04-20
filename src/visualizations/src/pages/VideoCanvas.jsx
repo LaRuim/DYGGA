@@ -5,6 +5,7 @@ import { InteractiveVisualization } from '../components/InteractiveVisualization
 import { WorldMapVisualization } from '../components/WorldMapVisualization';
 import { CategoryStreamgraph } from '../components/CategoryStreamgraph';
 import { FingerprintDuel } from '../features/fingerprint-duel/FingerprintDuel';
+import { TttScatter } from '../features/ttt-scatter/TttScatter';
 
 const MOCK_VIDEO_STORIES = [
   {
@@ -31,6 +32,15 @@ const MOCK_VIDEO_STORIES = [
     descriptionLine2: 'The Lottie gauge scores cosine similarity — same cluster doesn\'t always mean same shape.',
     defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
     visualization: 'fingerprint',
+  },
+  {
+    id: 11,
+    title: 'TTT vs Duration — Where Do Countries Land?',
+    author: 'Team Gatech',
+    description: 'Scatter plot of 104 countries plotting Time-to-Trend (x) against Trending Duration (y), colored by DBSCAN cluster.',
+    descriptionLine2: 'Hover any dot for country details. Click a cluster in the legend to isolate it. Dashed lines mark the median TTT and duration.',
+    defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    visualization: 'tttscatter',
   },
   {
     id: 3,
@@ -61,7 +71,7 @@ export function VideoCanvas() {
   }, [parsedId]);
 
   const [contentMode, setContentMode] = useState(
-    ['worldmap', 'streamgraph', 'fingerprint'].includes(selectedVideo.visualization) ? 'visual' : 'video'
+    ['worldmap', 'streamgraph', 'fingerprint', 'tttscatter'].includes(selectedVideo.visualization) ? 'visual' : 'video'
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const videoUrl = selectedVideo.defaultVideo;
@@ -133,6 +143,10 @@ export function VideoCanvas() {
             ) : selectedVideo.visualization === 'fingerprint' ? (
               <div className="video-visualization-stage">
                 <FingerprintDuel />
+              </div>
+            ) : selectedVideo.visualization === 'tttscatter' ? (
+              <div className="video-visualization-stage">
+                <TttScatter />
               </div>
             ) : (
               <div className="video-visualization-stage">

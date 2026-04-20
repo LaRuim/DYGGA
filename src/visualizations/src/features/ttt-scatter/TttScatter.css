@@ -1,0 +1,160 @@
+/* ── shell ──────────────────────────────────────────────────────────── */
+.tts-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 580px;
+  background: #0a0d14;
+  color: #f1f1f1;
+  font-family: 'Outfit', system-ui, sans-serif;
+  padding: 20px 24px 16px;
+  gap: 12px;
+  overflow: hidden;
+}
+
+/* ── header ─────────────────────────────────────────────────────────── */
+.tts-header { display: flex; flex-direction: column; gap: 4px; }
+
+.tts-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a06cd5;
+}
+
+.tts-title  { font-size: 1.1rem; font-weight: 700; }
+.tts-subtitle { font-size: 0.78rem; color: #555; }
+
+/* ── body ───────────────────────────────────────────────────────────── */
+.tts-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+  min-height: 0;
+}
+
+/* ── chart wrapper ──────────────────────────────────────────────────── */
+.tts-chart-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 340px;
+}
+
+.tts-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── tooltip ─────────────────────────────────────────────────────────── */
+.tts-tooltip {
+  position: absolute;
+  background: rgba(10, 12, 22, 0.96);
+  border: 1px solid rgba(160, 108, 213, 0.3);
+  border-radius: 8px;
+  padding: 9px 12px;
+  pointer-events: none;
+  z-index: 20;
+  min-width: 170px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.tts-tt-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.tts-tt-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tts-tt-cluster {
+  font-size: 0.7rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+.tts-tt-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 6px 0;
+}
+
+.tts-tt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 3px;
+}
+
+.tts-tt-row span:last-child {
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+/* ── legend ─────────────────────────────────────────────────────────── */
+.tts-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.tts-legend-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-family: inherit;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.tts-legend-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ccc;
+}
+
+.tts-legend-btn.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #f0f0f0;
+}
+
+.tts-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── preview thumbnail ──────────────────────────────────────────────── */
+.tts-preview-wrap {
+  width: 100%;
+  height: 100%;
+  background: #0a0d14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tts-preview-svg {
+  width: 100%;
+  height: 100%;
+}
