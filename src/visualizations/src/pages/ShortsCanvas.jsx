@@ -8,6 +8,8 @@ import {
   BertopicShort,
   ArchetypeShort,
   ChurnShort,
+  ClusterScatterShort,
+  WorldSyncShort,
 } from '../components/ShortsVisualizations';
 
 const MOCK_SHORTS_DATA = [
@@ -59,14 +61,28 @@ const MOCK_SHORTS_DATA = [
     ],
   },
   {
-    id: 5,
-    type: 'static',
-    title: 'Time Series Peaks',
-    creator: '@time_series',
-    desc: 'Finding seasonality in a 10-year trend. Observe the massive dip during Q2 2020.',
+    id: 10,
+    type: 'interactive',
+    shortKind: 'world-sync',
+    title: 'The World is Syncing',
+    creator: '@world_insights',
+    desc: 'Cosine similarity between countries\u2019 trending lists has risen from 84.9% → 86.7% (peak 2024). Tap a year to watch the gauge fill.',
     comments: [
-      { user: '@market_watcher', text: 'Insight: The recovery slope post-2020 is nearly twice as steep as the decade average.', isInsight: true }
-    ]
+      { user: '@geo_explorer', text: 'Insight: 2024 marks peak convergence at 86.69% — one in every six trending slots is effectively shared across borders.', isInsight: true },
+      { user: '@data_scientist', text: 'The 2025 dip to 85.34% is interesting — possibly local content surges post-pandemic reversing a platform-push trend.', isInsight: false },
+    ],
+  },
+  {
+    id: 9,
+    type: 'interactive',
+    shortKind: 'cluster-scatter',
+    title: 'Six archetypes, one map',
+    creator: '@geo_explorer',
+    desc: 'Each bubble is a DBSCAN archetype — x = time-to-trend, y = trending duration, size = avg views. Tap any bubble to inspect it.',
+    comments: [
+      { user: '@geo_master', text: 'Insight: Western Anglosphere sits alone in the bottom-left — fastest TTT and shortest duration by a wide margin. Every other cluster clusters tightly by comparison.', isInsight: true },
+      { user: '@data_scientist', text: 'Nordic/Oceania and C/E Europe nearly overlap despite being geographically distant — similar algorithmic behaviour.', isInsight: false },
+    ],
   },
   {
     id: 8,
@@ -89,6 +105,8 @@ function RenderVisualizationPlaceholder({ type, id, shortKind }) {
     if (shortKind === 'bertopic') return <BertopicShort />;
     if (shortKind === 'archetype') return <ArchetypeShort />;
     if (shortKind === 'churn') return <ChurnShort />;
+    if (shortKind === 'cluster-scatter') return <ClusterScatterShort />;
+    if (shortKind === 'world-sync') return <WorldSyncShort />;
   }
   return <RenderLegacyPlaceholder type={type} id={id} />;
 }
@@ -118,18 +136,18 @@ function RenderLegacyPlaceholder({ type, id }) {
 
   if (type === 'video') {
     return (
-      <div 
-        className="short-viz-placeholder" 
+      <div
+        className="short-viz-placeholder"
         style={{ cursor: 'pointer', backgroundColor: '#000', position: 'relative', overflow: 'hidden' }}
         onClick={toggleVideo}
       >
-        <video 
+        <video
           ref={videoRef}
           src={id === 2 ? "https://assets.mixkit.co/videos/preview/mixkit-abstract-video-of-a-liquid-texture-evolving-and-changing-32490-large.mp4" : "https://www.w3schools.com/html/mov_bbb.mp4"}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          autoPlay 
-          loop 
-          muted 
+          autoPlay
+          loop
+          muted
           playsInline
         />
 
@@ -159,7 +177,7 @@ export function ShortsCanvas() {
   const { id } = useParams();
   const containerRef = useRef(null);
   const [openCommentsId, setOpenCommentsId] = useState(null);
-  
+
   // Track liked shorts persistently via localStorage
   const [likedShorts, setLikedShorts] = useState(() => {
     const saved = localStorage.getItem('dva_liked_shorts');
@@ -180,7 +198,7 @@ export function ShortsCanvas() {
   };
 
   const initialIndex = MOCK_SHORTS_DATA.findIndex(s => s.id === parseInt(id));
-  const reorderedShorts = initialIndex > -1 
+  const reorderedShorts = initialIndex > -1
     ? [...MOCK_SHORTS_DATA.slice(initialIndex), ...MOCK_SHORTS_DATA.slice(0, initialIndex)]
     : MOCK_SHORTS_DATA;
 
@@ -192,7 +210,7 @@ export function ShortsCanvas() {
         return { maxWidth: '800px', maxHeight: '800px', aspectRatio: '1/1' };
       case 'fluid':
         return { maxWidth: '90%', maxHeight: '85vh', aspectRatio: 'auto' };
-      default: // default portrait
+      default: // portrait
         return { maxWidth: '450px', maxHeight: '800px', aspectRatio: '9/16' };
     }
   };
@@ -208,10 +226,12 @@ export function ShortsCanvas() {
 
       {reorderedShorts.map((short, idx) => (
         <div key={`${short.id}-${idx}`} className="short-player-wrapper">
+
+          {/* Main content card */}
           <div className="short-content-box" style={{ ...getResolutionStyle(short.resolution) }}>
-            
+
             <RenderVisualizationPlaceholder type={short.type} id={short.id} shortKind={short.shortKind} />
-            
+
             {/* Overlay Gradient for Text Readability */}
             <div className="shorts-card-info" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%)', paddingTop: '60px', paddingBottom: '24px', pointerEvents: 'none', zIndex: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', pointerEvents: 'auto' }}>
@@ -225,38 +245,6 @@ export function ShortsCanvas() {
                   {short.type}
                 </span>
               </div>
-            </div>
-
-            {/* Interaction Action Buttons on the Right */}
-            <div className="short-interactions" style={{ zIndex: 30 }}>
-              <button className="short-action-btn" onClick={() => toggleLike(short.id)}>
-                <div className="short-action-icon">
-                  <Heart 
-                    size={24} 
-                    color={likedShorts.has(short.id) ? "#ff3e3e" : "white"} 
-                    fill={likedShorts.has(short.id) ? "#ff3e3e" : "none"}
-                  />
-                </div>
-                <span style={{ color: likedShorts.has(short.id) ? '#ff3e3e' : 'white' }}>Like</span>
-              </button>
-              <button className="short-action-btn">
-                <div className="short-action-icon"><MinusCircle size={24} color="white" /></div>
-                <span style={{ color: 'white' }}>Ignore</span>
-              </button>
-              <button 
-                className="short-action-btn" 
-                onClick={() => setOpenCommentsId(openCommentsId === short.id ? null : short.id)}
-              >
-                <div className="short-action-icon"><MessageCircle size={24} color="white" /></div>
-                <span style={{ color: 'white' }}>{short.comments?.length || 0}</span>
-              </button>
-              <button className="short-action-btn">
-                <div className="short-action-icon"><Send size={24} color="white" /></div>
-                <span style={{ color: 'white' }}>Share</span>
-              </button>
-              <button className="short-action-btn">
-                <div className="short-action-icon"><MoreHorizontal size={24} color="white" /></div>
-              </button>
             </div>
 
             {/* Slide-Up Comments Overlay Drawer */}
@@ -298,10 +286,10 @@ export function ShortsCanvas() {
                         <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: '500' }}>{comment.user}</span>
                         {comment.isInsight && (
                           <span style={{
-                            backgroundColor: 'rgba(255, 60, 60, 0.15)', 
-                            color: '#ff5555', 
-                            padding: '2px 8px', 
-                            borderRadius: '12px', 
+                            backgroundColor: 'rgba(255, 60, 60, 0.15)',
+                            color: '#ff5555',
+                            padding: '2px 8px',
+                            borderRadius: '12px',
                             fontSize: '0.65rem',
                             fontWeight: 'bold',
                             border: '1px solid rgba(255, 60, 60, 0.3)'
@@ -315,17 +303,17 @@ export function ShortsCanvas() {
                       </div>
                       {comment.image && (
                         <div style={{ marginTop: '12px' }}>
-                          <img 
-                            src={comment.image} 
-                            alt="Insight attachment" 
-                            style={{ width: '100%', maxWidth: '300px', maxHeight: '200px', objectFit: 'cover', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }} 
+                          <img
+                            src={comment.image}
+                            alt="Insight attachment"
+                            style={{ width: '100%', maxWidth: '300px', maxHeight: '200px', objectFit: 'cover', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}
                           />
                         </div>
                       )}
                     </div>
                   </div>
                 ))}
-                
+
                 {(!short.comments || short.comments.length === 0) && (
                   <div style={{ color: 'var(--text-secondary)', textAlign: 'center', marginTop: '40px' }}>
                     No insights listed yet.
@@ -335,6 +323,39 @@ export function ShortsCanvas() {
             </div>
 
           </div>
+
+          {/* Interaction buttons — outside the content box so they don't overlap the visual */}
+          <div className="short-interactions" style={{ zIndex: 30 }}>
+            <button className="short-action-btn" onClick={() => toggleLike(short.id)}>
+              <div className="short-action-icon">
+                <Heart
+                  size={24}
+                  color={likedShorts.has(short.id) ? "#ff3e3e" : "white"}
+                  fill={likedShorts.has(short.id) ? "#ff3e3e" : "none"}
+                />
+              </div>
+              <span style={{ color: likedShorts.has(short.id) ? '#ff3e3e' : 'white' }}>Like</span>
+            </button>
+            <button className="short-action-btn">
+              <div className="short-action-icon"><MinusCircle size={24} color="white" /></div>
+              <span style={{ color: 'white' }}>Ignore</span>
+            </button>
+            <button
+              className="short-action-btn"
+              onClick={() => setOpenCommentsId(openCommentsId === short.id ? null : short.id)}
+            >
+              <div className="short-action-icon"><MessageCircle size={24} color="white" /></div>
+              <span style={{ color: 'white' }}>{short.comments?.length || 0}</span>
+            </button>
+            <button className="short-action-btn">
+              <div className="short-action-icon"><Send size={24} color="white" /></div>
+              <span style={{ color: 'white' }}>Share</span>
+            </button>
+            <button className="short-action-btn">
+              <div className="short-action-icon"><MoreHorizontal size={24} color="white" /></div>
+            </button>
+          </div>
+
         </div>
       ))}
     </div>

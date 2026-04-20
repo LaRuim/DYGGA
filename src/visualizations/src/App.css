@@ -386,14 +386,8 @@
   flex-direction: column;
   gap: 20px;
   position: absolute;
-  right: 16px;
+  left: calc(50% + 225px + 12px);
   bottom: 120px;
-}
-
-@media (min-width: 600px) {
-  .short-player-wrapper {
-    padding-right: 70px; /* Space for buttons */
-  }
 }
 
 .short-action-btn {
@@ -419,6 +413,20 @@
 .short-action-icon:hover {
   background-color: var(--bg-hover);
 }
+
+@keyframes sync-pulse {
+  0%   { transform: scale(1);   opacity: 0.18; }
+  80%  { transform: scale(1.5); opacity: 0;    }
+  100% { transform: scale(1.5); opacity: 0;    }
+}
+
+.sync-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.sync-pulse-0 { animation: sync-pulse 2.6s ease-out infinite; }
+.sync-pulse-1 { animation: sync-pulse 2.6s ease-out 0.87s infinite; }
+.sync-pulse-2 { animation: sync-pulse 2.6s ease-out 1.74s infinite; }
 
 .canvas-back-btn {
   position: fixed;
