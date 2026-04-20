@@ -233,7 +233,7 @@ export function ShortsCanvas() {
             <RenderVisualizationPlaceholder type={short.type} id={short.id} shortKind={short.shortKind} />
 
             {/* Overlay Gradient for Text Readability */}
-            <div className="shorts-card-info" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%)', paddingTop: '60px', paddingBottom: '24px', pointerEvents: 'none', zIndex: 20 }}>
+            <div className="shorts-card-info" style={{ pointerEvents: 'none', zIndex: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', pointerEvents: 'auto' }}>
                 <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#fff' }}></div>
                 <span style={{ fontWeight: 'bold', fontSize: '1.05rem', color: '#fff' }}>{short.creator}</span>
