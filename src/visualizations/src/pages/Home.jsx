@@ -1,7 +1,8 @@
-import { Waves, Heart, Globe2 } from 'lucide-react';
+import { Waves, Heart, Globe2, BarChart2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ShortPreview } from '../components/ShortsVisualizations';
+import { CATEGORY_STREAM } from '../data/mlResults';
 
 const MOCK_SHORTS = [
   { id: 1, title: 'Attention is Concentrating', views: '1.2M views', kind: 'convergence' },
@@ -9,6 +10,9 @@ const MOCK_SHORTS = [
   { id: 3, title: 'BERTopic Noise Reduction', views: '420K views', kind: 'bertopic' },
   { id: 4, title: 'DBSCAN Archetype Profiles', views: '2M views', kind: 'archetype' },
   { id: 5, title: 'Time Series Peaks', views: '3M views' },
+  { id: 6, title: 'Content Lifespan by Category', views: '950K views', kind: 'survival-category' },
+  { id: 7, title: 'Which Countries Trend Longest?', views: '1.4M views', kind: 'region-duration' },
+  { id: 8, title: 'Monthly Trend Churn', views: '670K views', kind: 'churn' },
 ];
 
 const MOCK_VIDEOS = [
@@ -18,9 +22,12 @@ const MOCK_VIDEOS = [
   { id: 4, title: 'Reviewing our machine learning models', subtitle: 'Clustering, survival analysis, topic modeling', views: '34K views', time: '1 month ago' },
   { id: 5, title: 'Interactive Dashboard Demo - Final Project', subtitle: 'End-to-end integrated view', views: '10K views', time: '1 day ago' },
   { id: 6, title: 'The architecture behind our scalable frontend', subtitle: 'React + Vite + D3 pipeline', views: '45K views', time: '5 days ago' },
+  { id: 7, title: 'Category Composition Over Time', subtitle: 'Streamgraph — Entertainment rises, Sports dips Q4', views: '28K views', time: '3 days ago', kind: 'streamgraph' },
 ];
 
 const ARCHETYPE_COLORS = ['#ff6b6b', '#ffe66d', '#4ecdc4', '#a06cd5', '#ff9f43', '#54a0ff'];
+const STREAM_COLORS = ['#ff8a8a', '#4ecdc4', '#a06cd5', '#ff9f43', '#ffe66d', '#54a0ff', '#2ecc71', '#fd79a8'];
+const STREAM_CATS = ['Entertainment', 'Gaming', 'People & Blogs', 'Sports', 'Music', 'News & Politics', 'Education', 'Comedy'];
 
 function WorldMapPreview() {
   return (
@@ -44,6 +51,38 @@ function WorldMapPreview() {
         <Globe2 size={26} />
         <div className="video-preview-title">Interactive World Map</div>
         <div className="video-preview-sub">DBSCAN · 6 Archetypes · 104 countries</div>
+      </div>
+    </div>
+  );
+}
+
+function StreamgraphPreview() {
+  const W = 100, H = 56, n = CATEGORY_STREAM.length;
+  const stacked = STREAM_CATS.map((cat, ci) =>
+    CATEGORY_STREAM.map((row, xi) => {
+      const base = STREAM_CATS.slice(0, ci).reduce((s, c) => s + row[c], 0);
+      return { xi, base, top: base + row[cat] };
+    })
+  );
+  const xS = (xi) => (xi / (n - 1)) * W;
+  const yS = (v) => (1 - v) * H;
+  const buildPath = (pts) => {
+    const fwd = pts.map(({ xi, top }) => `${xS(xi).toFixed(1)},${yS(top).toFixed(1)}`);
+    const bwd = [...pts].reverse().map(({ xi, base }) => `${xS(xi).toFixed(1)},${yS(base).toFixed(1)}`);
+    return `M ${fwd.join(' L ')} L ${bwd.join(' L ')} Z`;
+  };
+  return (
+    <div className="video-preview-worldmap">
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" className="video-preview-svg">
+        <rect width={W} height={H} fill="#05070d" />
+        {stacked.map((pts, i) => (
+          <path key={STREAM_CATS[i]} d={buildPath(pts)} fill={STREAM_COLORS[i]} opacity="0.82" />
+        ))}
+      </svg>
+      <div className="video-preview-overlay">
+        <BarChart2 size={26} />
+        <div className="video-preview-title">Category Streamgraph</div>
+        <div className="video-preview-sub">12 quarters · 8 categories · 2022–2025</div>
       </div>
     </div>
   );
@@ -114,9 +153,9 @@ export function Home({ likedOnly = false, videosOnly = false }) {
           <div className="video-grid">
             {MOCK_VIDEOS.map((video) => (
               <div key={video.id} className="video-card" onClick={() => navigate(`/video/${video.id}`)}>
-                <div className="video-thumbnail-container" style={{ background: video.kind === 'worldmap' ? 'transparent' : `hsl(${video.id * 40 + 100}, 50%, 30%)` }}>
-                  {video.kind === 'worldmap' ? <WorldMapPreview /> : null}
-                  <div className="video-badge">{video.kind === 'worldmap' ? 'Interactive' : 'Data Story'}</div>
+                <div className="video-thumbnail-container" style={{ background: (video.kind === 'worldmap' || video.kind === 'streamgraph') ? 'transparent' : `hsl(${video.id * 40 + 100}, 50%, 30%)` }}>
+                  {video.kind === 'worldmap' ? <WorldMapPreview /> : video.kind === 'streamgraph' ? <StreamgraphPreview /> : null}
+                  <div className="video-badge">{video.kind === 'worldmap' || video.kind === 'streamgraph' ? 'Interactive' : 'Data Story'}</div>
                 </div>
                 <div className="video-info">
                   <div className="video-author-avatar"></div>
