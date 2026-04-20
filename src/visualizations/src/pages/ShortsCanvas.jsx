@@ -7,6 +7,7 @@ import {
   SurvivalShort,
   BertopicShort,
   ArchetypeShort,
+  ChurnShort,
 } from '../components/ShortsVisualizations';
 
 const MOCK_SHORTS_DATA = [
@@ -67,6 +68,18 @@ const MOCK_SHORTS_DATA = [
       { user: '@market_watcher', text: 'Insight: The recovery slope post-2020 is nearly twice as steep as the decade average.', isInsight: true }
     ]
   },
+  {
+    id: 8,
+    type: 'interactive',
+    shortKind: 'churn',
+    title: 'Entries outpace exits every month',
+    creator: '@dva_graph',
+    desc: 'Monthly new trending-list entries vs exits, Jul 2022 – Jun 2025. Scrub or hit play to watch the platform\'s churn rate grow year-over-year.',
+    comments: [
+      { user: '@data_scientist', text: 'Insight: December consistently spikes ~15% above the annual baseline — holiday content floods the trending lists each year.', isInsight: true },
+      { user: '@ml_eval', text: 'The gap between entries and exits stays roughly constant (~4K/mo), suggesting the active pool is slowly growing.', isInsight: false },
+    ],
+  },
 ];
 
 function RenderVisualizationPlaceholder({ type, id, shortKind }) {
@@ -75,6 +88,7 @@ function RenderVisualizationPlaceholder({ type, id, shortKind }) {
     if (shortKind === 'survival') return <SurvivalShort />;
     if (shortKind === 'bertopic') return <BertopicShort />;
     if (shortKind === 'archetype') return <ArchetypeShort />;
+    if (shortKind === 'churn') return <ChurnShort />;
   }
   return <RenderLegacyPlaceholder type={type} id={id} />;
 }

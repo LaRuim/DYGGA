@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Clapperboard, Film, MoreVertical, MessageSquare, Send } from 'lucide-react';
 import { InteractiveVisualization } from '../components/InteractiveVisualization';
 import { WorldMapVisualization } from '../components/WorldMapVisualization';
+import { CategoryStreamgraph } from '../components/CategoryStreamgraph';
 
 const MOCK_VIDEO_STORIES = [
   {
@@ -27,6 +28,15 @@ const MOCK_VIDEO_STORIES = [
     author: 'Team Gatech',
     description: 'Performance-friendly rendering strategy for high-volume visual analytics.',
     defaultVideo: 'https://www.w3schools.com/html/movie.mp4',
+  },
+  {
+    id: 7,
+    title: 'Category Composition Over Time — Streamgraph',
+    author: '',
+    description: 'Stacked area chart showing the quarterly share of the top 8 YouTube categories from Q3 2022 to Q2 2025.',
+    descriptionLine2: 'Entertainment\'s share grows from 27.8% → 29.4% as Sports retreats. Hover any band or the legend to isolate a category.',
+    defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    visualization: 'streamgraph',
   },
 ];
 
@@ -103,6 +113,10 @@ export function VideoCanvas() {
             ) : selectedVideo.visualization === 'worldmap' ? (
               <div className="video-visualization-stage worldmap-stage">
                 <WorldMapVisualization />
+              </div>
+            ) : selectedVideo.visualization === 'streamgraph' ? (
+              <div className="video-visualization-stage">
+                <CategoryStreamgraph />
               </div>
             ) : (
               <div className="video-visualization-stage">

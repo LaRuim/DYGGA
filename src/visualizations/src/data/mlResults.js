@@ -147,3 +147,96 @@ export const ISO2_TO_NUMERIC = {
 export const NUMERIC_TO_ISO2 = Object.entries(ISO2_TO_NUMERIC).reduce((acc, [k, v]) => {
   acc[v] = k; return acc;
 }, {});
+
+// BERTopic sub-topic rank mobility — top 6 sub-topics per category across 2022-2025
+// rank[i][year] = 1-indexed rank in that category's sub-topic list (null = outside top 10)
+// share[i][year] = % of that category's videos in the sub-topic
+// Source: notebook cell 360180ed (plot_top_subtopics output shown in DVA_Midterm_Report screenshots)
+export const BERTOPIC_SUBTOPICS = {
+  Entertainment: {
+    topics:  ['TV/Episode', 'TV/Serial', 'Movies', 'Turkish TV', 'Serial Drama', 'Rage/Shorts'],
+    colors:  ['#ff8a8a',    '#ffe66d',   '#4ecdc4', '#a06cd5',    '#ff9f43',      '#54a0ff'],
+    ranks:   [[2,1,1,1],[1,2,2,2],[4,4,3,3],[6,7,7,6],[7,5,6,7],[null,10,10,null]],
+    shares:  [[12.1,12.3,15.9,17.8],[15.4,16.3,15.7,15.0],[9.9,9.0,7.8,7.4],[4.6,4.2,4.7,5.6],[4.1,3.9,4.2,3.7],[null,3.2,2.4,null]],
+  },
+  Sports: {
+    topics:  ['Highlights', 'Real Madrid', 'League',  'Maroc/Van', 'Man United', 'Cup Ties'],
+    colors:  ['#ff8a8a',    '#ffe66d',     '#4ecdc4', '#a06cd5',   '#ff9f43',    '#54a0ff'],
+    ranks:   [[1,1,1,1],[2,2,2,2],[3,3,3,3],[7,6,8,7],[9,8,7,9],[null,null,9,9]],
+    shares:  [[8.9,9.7,10.0,9.4],[7.8,7.4,8.3,8.6],[7.3,7.0,6.0,7.0],[3.9,3.8,3.2,3.0],[3.1,3.2,3.2,3.0],[null,null,2.8,2.8]],
+  },
+  Gaming: {
+    topics:  ['MC+FIFA',  'MC+Fortnite', 'GTA+FC',  'Dinosaurios', 'Roblox',  'Free Games'],
+    colors:  ['#ff8a8a',  '#ffe66d',     '#4ecdc4', '#a06cd5',     '#ff9f43', '#54a0ff'],
+    ranks:   [[1,1,1,1],[4,2,2,2],[2,3,3,null],[6,6,9,10],[8,7,5,3],[10,8,7,5]],
+    shares:  [[7.9,7.6,6.7,7.4],[3.4,3.9,4.9,4.7],[4.0,3.7,3.7,null],[2.8,2.8,2.5,2.7],[2.2,2.5,3.0,3.8],[2.1,2.5,2.9,3.3]],
+  },
+  Music: {
+    topics:  ['Song+MV', 'New Songs', 'Video+New', 'Benson Boone', 'Contro Te', 'BIAAS'],
+    colors:  ['#ff8a8a', '#ffe66d',   '#4ecdc4',   '#a06cd5',      '#ff9f43',   '#54a0ff'],
+    ranks:   [[1,1,1,1],[3,2,2,2],[2,3,3,3],[5,5,5,9],[6,4,7,8],[8,8,4,4]],
+    shares:  [[8.9,9.6,10.8,10.5],[4.9,6.3,7.6,7.6],[6.1,6.2,6.8,7.0],[3.7,3.5,2.9,2.5],[3.5,3.5,2.9,2.6],[2.6,2.7,3.3,4.1]],
+  },
+  'P & Blogs': {
+    topics:  ['Shorts+Vlogs', 'Family Vlogs', 'Funny Shorts', 'TikTok Vlogs', 'Global',  'Challenge'],
+    colors:  ['#ff8a8a',      '#ffe66d',      '#4ecdc4',      '#a06cd5',       '#ff9f43', '#54a0ff'],
+    ranks:   [[2,1,1,1],[1,2,2,2],[4,4,4,4],[10,6,5,5],[6,10,10,7],[5,5,6,null]],
+    shares:  [[10.6,11.8,12.9,12.6],[11.3,10.2,9.0,9.2],[6.6,7.3,7.5,8.3],[3.0,3.8,4.5,5.1],[4.8,3.0,2.5,2.7],[5.7,5.5,4.5,null]],
+  },
+};
+
+// Monthly video entries vs exits — Jul 2022 to Jun 2025 (notebook cell 9d1cfb86)
+export const MONTHLY_CHURN = [
+  { month: '07/22', entries: 72400, exits: 68200 },
+  { month: '08/22', entries: 68100, exits: 64800 },
+  { month: '09/22', entries: 75800, exits: 71400 },
+  { month: '10/22', entries: 79200, exits: 74600 },
+  { month: '11/22', entries: 81400, exits: 76800 },
+  { month: '12/22', entries: 88600, exits: 83200 },
+  { month: '01/23', entries: 76200, exits: 71400 },
+  { month: '02/23', entries: 71800, exits: 67200 },
+  { month: '03/23', entries: 78400, exits: 73800 },
+  { month: '04/23', entries: 77200, exits: 72600 },
+  { month: '05/23', entries: 80100, exits: 75400 },
+  { month: '06/23', entries: 82600, exits: 78000 },
+  { month: '07/23', entries: 79800, exits: 75200 },
+  { month: '08/23', entries: 74200, exits: 70100 },
+  { month: '09/23', entries: 83400, exits: 79100 },
+  { month: '10/23', entries: 86800, exits: 82400 },
+  { month: '11/23', entries: 88200, exits: 83800 },
+  { month: '12/23', entries: 95400, exits: 90200 },
+  { month: '01/24', entries: 82600, exits: 78800 },
+  { month: '02/24', entries: 78400, exits: 74200 },
+  { month: '03/24', entries: 85200, exits: 81400 },
+  { month: '04/24', entries: 83800, exits: 79600 },
+  { month: '05/24', entries: 87400, exits: 83200 },
+  { month: '06/24', entries: 89600, exits: 85400 },
+  { month: '07/24', entries: 86200, exits: 82400 },
+  { month: '08/24', entries: 80800, exits: 77200 },
+  { month: '09/24', entries: 91400, exits: 87600 },
+  { month: '10/24', entries: 94200, exits: 90400 },
+  { month: '11/24', entries: 96800, exits: 92600 },
+  { month: '12/24', entries: 104200, exits: 99800 },
+  { month: '01/25', entries: 88600, exits: 84800 },
+  { month: '02/25', entries: 84200, exits: 80600 },
+  { month: '03/25', entries: 91800, exits: 88200 },
+  { month: '04/25', entries: 90400, exits: 86800 },
+  { month: '05/25', entries: 94600, exits: 91200 },
+  { month: '06/25', entries: 92800, exits: 89400 },
+];
+
+// Category composition over time — quarterly shares for top 8 categories (notebook cell f1ee517e)
+export const CATEGORY_STREAM = [
+  { period: 'Q3\'22', Entertainment: 0.278, Gaming: 0.126, 'People & Blogs': 0.131, Sports: 0.135, Music: 0.108, 'News & Politics': 0.090, Education: 0.068, Comedy: 0.064 },
+  { period: 'Q4\'22', Entertainment: 0.283, Gaming: 0.138, 'People & Blogs': 0.128, Sports: 0.118, Music: 0.110, 'News & Politics': 0.088, Education: 0.068, Comedy: 0.067 },
+  { period: 'Q1\'23', Entertainment: 0.276, Gaming: 0.127, 'People & Blogs': 0.129, Sports: 0.141, Music: 0.111, 'News & Politics': 0.092, Education: 0.058, Comedy: 0.066 },
+  { period: 'Q2\'23', Entertainment: 0.281, Gaming: 0.124, 'People & Blogs': 0.132, Sports: 0.128, Music: 0.113, 'News & Politics': 0.086, Education: 0.070, Comedy: 0.066 },
+  { period: 'Q3\'23', Entertainment: 0.284, Gaming: 0.128, 'People & Blogs': 0.130, Sports: 0.130, Music: 0.109, 'News & Politics': 0.085, Education: 0.068, Comedy: 0.066 },
+  { period: 'Q4\'23', Entertainment: 0.289, Gaming: 0.140, 'People & Blogs': 0.127, Sports: 0.114, Music: 0.108, 'News & Politics': 0.088, Education: 0.069, Comedy: 0.065 },
+  { period: 'Q1\'24', Entertainment: 0.282, Gaming: 0.130, 'People & Blogs': 0.128, Sports: 0.138, Music: 0.112, 'News & Politics': 0.091, Education: 0.056, Comedy: 0.063 },
+  { period: 'Q2\'24', Entertainment: 0.285, Gaming: 0.126, 'People & Blogs': 0.131, Sports: 0.131, Music: 0.114, 'News & Politics': 0.084, Education: 0.064, Comedy: 0.065 },
+  { period: 'Q3\'24', Entertainment: 0.292, Gaming: 0.131, 'People & Blogs': 0.128, Sports: 0.125, Music: 0.108, 'News & Politics': 0.082, Education: 0.069, Comedy: 0.065 },
+  { period: 'Q4\'24', Entertainment: 0.296, Gaming: 0.143, 'People & Blogs': 0.125, Sports: 0.112, Music: 0.107, 'News & Politics': 0.086, Education: 0.068, Comedy: 0.063 },
+  { period: 'Q1\'25', Entertainment: 0.288, Gaming: 0.134, 'People & Blogs': 0.127, Sports: 0.136, Music: 0.112, 'News & Politics': 0.088, Education: 0.055, Comedy: 0.060 },
+  { period: 'Q2\'25', Entertainment: 0.294, Gaming: 0.129, 'People & Blogs': 0.126, Sports: 0.128, Music: 0.111, 'News & Politics': 0.083, Education: 0.066, Comedy: 0.063 },
+];

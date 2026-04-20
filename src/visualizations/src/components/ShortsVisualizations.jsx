@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { TrendingDown, TrendingUp, Activity, Clock, Layers, Target, Play, Pause } from 'lucide-react';
-import { CLUSTERS, CONVERGENCE } from '../data/mlResults';
+import { CLUSTERS, CONVERGENCE, MONTHLY_CHURN } from '../data/mlResults';
 
 // ============================================================
 // Shared shell used by every short so the visuals look consistent.
@@ -386,6 +386,104 @@ export function ArchetypeShort() {
 }
 
 // ============================================================
+// 5. Monthly Trend Churn (entries vs exits, Jul 2022 – Jun 2025)
+// ============================================================
+export function ChurnShort() {
+  const [idx, setIdx] = useState(MONTHLY_CHURN.length - 1);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    if (!playing) return;
+    const tick = setInterval(() => {
+      setIdx((i) => {
+        if (i >= MONTHLY_CHURN.length - 1) { setPlaying(false); return i; }
+        return i + 1;
+      });
+    }, 120);
+    return () => clearInterval(tick);
+  }, [playing]);
+
+  const w = 320, h = 150, pad = { l: 28, r: 10, t: 10, b: 22 };
+  const allVals = MONTHLY_CHURN.flatMap((d) => [d.entries, d.exits]);
+  const vMin = Math.min(...allVals) * 0.95;
+  const vMax = Math.max(...allVals) * 1.05;
+  const xScale = (i) => pad.l + (i / (MONTHLY_CHURN.length - 1)) * (w - pad.l - pad.r);
+  const yScale = (v) => h - pad.b - ((v - vMin) / (vMax - vMin)) * (h - pad.t - pad.b);
+
+  const ePath = MONTHLY_CHURN.map((d, i) => `${i === 0 ? 'M' : 'L'}${xScale(i).toFixed(1)},${yScale(d.entries).toFixed(1)}`).join(' ');
+  const xPath = MONTHLY_CHURN.map((d, i) => `${i === 0 ? 'M' : 'L'}${xScale(i).toFixed(1)},${yScale(d.exits).toFixed(1)}`).join(' ');
+
+  const cur = MONTHLY_CHURN[idx];
+  const net = cur.entries - cur.exits;
+
+  const yearMarks = [0, 6, 12, 18, 24, 30];
+
+  return (
+    <ShortShell
+      eyebrow="TREND CHURN · 2022 → 2025"
+      title="Entries outpace exits every month"
+      accent="#4ecdc4"
+      footer={
+        <div className="short-stat-row">
+          <div className="short-stat">
+            <div className="short-stat-label"><TrendingUp size={12} /> Entries — {cur.month}</div>
+            <div className="short-stat-val">{(cur.entries / 1000).toFixed(1)}<span className="short-stat-unit">K</span></div>
+            <div className="short-stat-delta" style={{ color: '#4ecdc4' }}>+{(net / 1000).toFixed(1)}K net</div>
+          </div>
+          <div className="short-stat">
+            <div className="short-stat-label"><TrendingDown size={12} /> Exits</div>
+            <div className="short-stat-val">{(cur.exits / 1000).toFixed(1)}<span className="short-stat-unit">K</span></div>
+            <div className="short-stat-delta" style={{ color: '#aaa' }}>turnover ratio</div>
+          </div>
+        </div>
+      }
+    >
+      <svg viewBox={`0 0 ${w} ${h}`} className="short-svg">
+        <defs>
+          <linearGradient id="eFillChurn" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#4ecdc4" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#4ecdc4" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {yearMarks.map((i) => (
+          <line key={i} x1={xScale(i)} x2={xScale(i)} y1={pad.t} y2={h - pad.b}
+            stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+        ))}
+        <path d={`${ePath} L${xScale(MONTHLY_CHURN.length - 1)},${h - pad.b} L${xScale(0)},${h - pad.b} Z`}
+          fill="url(#eFillChurn)" />
+        <path d={ePath} stroke="#4ecdc4" strokeWidth="1.8" fill="none" />
+        <path d={xPath} stroke="#ff8a8a" strokeWidth="1.8" fill="none" strokeDasharray="3 3" />
+        <line x1={xScale(idx)} x2={xScale(idx)} y1={pad.t} y2={h - pad.b}
+          stroke="rgba(255,255,255,0.4)" strokeWidth="1" strokeDasharray="2 2" />
+        <circle cx={xScale(idx)} cy={yScale(cur.entries)} r="3.5" fill="#4ecdc4" />
+        <circle cx={xScale(idx)} cy={yScale(cur.exits)} r="3.5" fill="#ff8a8a" />
+        {[0, 6, 12, 18, 24, 30].map((i) => (
+          <text key={i} x={xScale(i)} y={h - 5} fontSize="8" fill="rgba(255,255,255,0.45)" textAnchor="middle">
+            {MONTHLY_CHURN[i]?.month.split('/')[1] ? `'${MONTHLY_CHURN[i].month.split('/')[1]}` : ''}
+          </text>
+        ))}
+        <g fontSize="8" fill="rgba(255,255,255,0.6)">
+          <line x1={pad.l} x2={pad.l + 8} y1={12} y2={12} stroke="#4ecdc4" strokeWidth="1.8" />
+          <text x={pad.l + 12} y={15}>entries</text>
+          <line x1={pad.l + 54} x2={pad.l + 62} y1={12} y2={12} stroke="#ff8a8a" strokeWidth="1.8" strokeDasharray="3 2" />
+          <text x={pad.l + 66} y={15}>exits</text>
+        </g>
+      </svg>
+
+      <div className="short-scrubber">
+        <button className="short-play-btn" onClick={() => { if (idx >= MONTHLY_CHURN.length - 1) setIdx(0); setPlaying((p) => !p); }}>
+          {playing ? <Pause size={14} /> : <Play size={14} />}
+        </button>
+        <input type="range" min={0} max={MONTHLY_CHURN.length - 1} step={1} value={idx}
+          onChange={(e) => { setIdx(Number(e.target.value)); setPlaying(false); }}
+          className="short-range" />
+        <div className="short-year">{cur.month}</div>
+      </div>
+    </ShortShell>
+  );
+}
+
+// ============================================================
 // Preview thumbnails for the Home page shorts shelf
 // ============================================================
 export function ShortPreview({ kind }) {
@@ -448,6 +546,19 @@ export function ShortPreview({ kind }) {
           })}
         </svg>
         <div className="short-preview-badge">ARCHETYPES</div>
+      </div>
+    );
+  }
+  if (kind === 'churn') {
+    const pts = MONTHLY_CHURN.map((d, i) => `${3 + (i / (MONTHLY_CHURN.length - 1)) * 94},${55 - ((d.entries - 60000) / 50000) * 45}`).join(' ');
+    const xPts = MONTHLY_CHURN.map((d, i) => `${3 + (i / (MONTHLY_CHURN.length - 1)) * 94},${55 - ((d.exits - 60000) / 50000) * 45}`).join(' ');
+    return (
+      <div className="short-preview" style={{ background: 'radial-gradient(circle at 50% 70%, #0a2020, #05070d)' }}>
+        <svg viewBox="0 0 100 60" className="short-preview-svg">
+          <polyline points={pts} stroke="#4ecdc4" strokeWidth="1.5" fill="none" opacity={0.9} />
+          <polyline points={xPts} stroke="#ff8a8a" strokeWidth="1.5" fill="none" opacity={0.9} strokeDasharray="3 2" />
+        </svg>
+        <div className="short-preview-badge">TREND CHURN</div>
       </div>
     );
   }
