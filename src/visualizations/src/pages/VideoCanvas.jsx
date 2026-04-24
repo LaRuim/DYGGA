@@ -4,6 +4,7 @@ import { ArrowLeft, Clapperboard, Film, MoreVertical, MessageSquare } from 'luci
 import { InteractiveVisualization } from '../components/InteractiveVisualization';
 import { WorldMapVisualization } from '../components/WorldMapVisualization';
 import { CategoryStreamgraph } from '../components/CategoryStreamgraph';
+import { SubtopicsVisualization } from '../components/SubtopicsVisualization';
 import { FingerprintDuel } from '../features/fingerprint-duel/FingerprintDuel';
 import { TttScatter } from '../features/ttt-scatter/TttScatter';
 
@@ -75,6 +76,20 @@ const MOCK_VIDEO_STORIES = [
     ],
   },
   {
+    id: 8,
+    title: 'BERTopic Sub-topic Rank Mobility',
+    author: '',
+    description: 'Bump chart tracking the top 6 BERTopic sub-topics per category across 2022–2025. Lines show rank changes year-over-year.',
+    descriptionLine2: 'Select a category, hover any line to reveal its % share. Bold lines are the biggest riser and faller.',
+    defaultVideo: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    visualization: 'subtopics',
+    comments: [
+      { user: '@ml_eval',       color: '#e91e63', time: '2 days ago',  text: 'In Gaming, Roblox/Clash climbed from rank 8 → rank 3 (2022→2025) while GTA+FC dropped out of the top 10 — reflecting a shift toward battle-royale crossovers.' },
+      { user: '@geo_master',    color: '#4caf50', time: '1 day ago',   text: 'TikTok\'s rise in People & Blogs (rank 10 → rank 5) is a clear signal — attention spans are shrinking and short-form content is taking over even on YouTube.' },
+      { user: '@data_scientist',color: '#2196f3', time: '3 hours ago', text: 'The BIAAS cluster in Music (rank 8 → rank 4) shows new regional artists breaking through the algorithm over time.' },
+    ],
+  },
+  {
     id: 7,
     title: 'Category Composition Over Time — Streamgraph',
     author: '',
@@ -101,7 +116,7 @@ export function VideoCanvas() {
   }, [parsedId]);
 
   const [contentMode, setContentMode] = useState(
-    ['worldmap', 'streamgraph', 'fingerprint', 'tttscatter'].includes(selectedVideo.visualization) ? 'visual' : 'video'
+    ['worldmap', 'streamgraph', 'subtopics', 'fingerprint', 'tttscatter'].includes(selectedVideo.visualization) ? 'visual' : 'video'
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const videoUrl = selectedVideo.defaultVideo;
@@ -169,6 +184,10 @@ export function VideoCanvas() {
             ) : selectedVideo.visualization === 'streamgraph' ? (
               <div className="video-visualization-stage">
                 <CategoryStreamgraph />
+              </div>
+            ) : selectedVideo.visualization === 'subtopics' ? (
+              <div className="video-visualization-stage">
+                <SubtopicsVisualization />
               </div>
             ) : selectedVideo.visualization === 'fingerprint' ? (
               <div className="video-visualization-stage">
